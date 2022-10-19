@@ -3,7 +3,6 @@ const preloadFont = () => {
   myFont.load()
     .then((font) => {
       document.fonts.add(font);
-      console.log('Font loaded');
     });
 };
 

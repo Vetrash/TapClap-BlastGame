@@ -1,4 +1,3 @@
-import app from './app.js';
 import startGame from './startGame.js';
 import preloadAllimg from './component/tools/preloadAllImg.js';
 import preloadFont from './component/tools/preloadFont.js';

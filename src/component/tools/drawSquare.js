@@ -1,5 +1,7 @@
 export const drawSquareFill = (setting) => {
-  const { x1, x2, y1, y2, radius, color, canvas } = setting;
+  const {
+    x1, x2, y1, y2, radius, color, canvas,
+  } = setting;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = color;
   ctx.beginPath();
@@ -16,7 +18,9 @@ export const drawSquareFill = (setting) => {
 };
 
 export const drawSquareStroke = (setting) => {
-  const { x1, x2, y1, y2, radius, color, canvas, lWidth } = setting;
+  const {
+    x1, x2, y1, y2, radius, color, canvas, lWidth,
+  } = setting;
   const corX1 = x1 + lWidth / 2;
   const corX2 = x2 - lWidth / 2;
   const corY1 = y1 + lWidth / 2;
@@ -38,7 +42,9 @@ export const drawSquareStroke = (setting) => {
 };
 
 export const drawSquareClip = (setting) => {
-  const { x1, x2, y1, y2, radius, canvas } = setting;
+  const {
+    x1, x2, y1, y2, radius, canvas,
+  } = setting;
   const ctx = canvas.getContext('2d');
   ctx.beginPath();
   ctx.moveTo(x1 + radius, y1);

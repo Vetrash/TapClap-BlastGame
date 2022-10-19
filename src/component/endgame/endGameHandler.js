@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import startGame from '../../startGame.js';
 import getSettings from '../../settings.js';
 import getGState from '../../globalState.js';

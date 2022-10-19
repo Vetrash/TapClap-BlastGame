@@ -2,7 +2,7 @@ import getSettings from '../../settings.js';
 import getGState from '../../globalState.js';
 
 const { widthLayers } = getSettings();
-const { widthImgBar} = getSettings().loadBar;
+const { widthImgBar } = getSettings().loadBar;
 
 const drawTitle = (ctx) => {
   ctx.fillStyle = '#ffffff';

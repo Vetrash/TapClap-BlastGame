@@ -30,7 +30,9 @@ export const selectSpell = () => {
     const radius = 65;
     const color = '#ffd700';
     const canvas = getGState().canvasLayer.UILayer;
-    const setting = { x1, x2, y1, y2, radius, color, canvas, lWidth }
+    const setting = {
+      x1, x2, y1, y2, radius, color, canvas, lWidth,
+    };
     drawSquareStroke(setting);
   }
 };

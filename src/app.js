@@ -16,7 +16,8 @@ import { managerPuff, renderAllPuff } from './component/effects/puff.js';
 import getCoins from './component/UI/getCoin.js';
 import renderWin from './component/endgame/renderWin.js';
 import renderLose from './component/endgame/renderLose.js';
-import endGameHandler from './component/endgame/endGameHandler.js'
+// eslint-disable-next-line import/no-cycle
+import endGameHandler from './component/endgame/endGameHandler.js';
 
 let lastTime;
 

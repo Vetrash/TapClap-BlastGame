@@ -1,5 +1,6 @@
 import getSettings, { getStartState } from './settings.js';
 import getGState from './globalState.js';
+// eslint-disable-next-line import/no-cycle
 import App from './app.js';
 
 const startGame = () => {

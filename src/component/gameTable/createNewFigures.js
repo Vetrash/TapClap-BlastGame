@@ -24,7 +24,9 @@ const createNewFigures = () => {
         const img = gametable.fuguresImg[indexType].offCanvas;
         const type = gametable.fuguresImg[indexType].name;
         const corY = (startDrawY - i * (heightFigure + gapY));
-        gametable.figures[index].push({ corX, corY, img, type });
+        gametable.figures[index].push({
+          corX, corY, img, type,
+        });
         gametable.handingFigure.push(gametable.figures[index][gametable.figures[index].length - 1]);
       }
     }

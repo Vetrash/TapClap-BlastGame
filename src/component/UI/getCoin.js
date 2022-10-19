@@ -1,5 +1,5 @@
-import getSettings from "../../settings"
-import getGState from "../../globalState"
+import getSettings from '../../settings.js';
+import getGState from '../../globalState.js';
 
 const { coinPrise, borderPrise } = getSettings();
 

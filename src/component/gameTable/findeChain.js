@@ -43,8 +43,6 @@ const chain = (col, row, state, typeStart = undefined) => {
 
 const findeChain = (loc) => {
   const { gametable } = getGState();
-  //gametable.chainArr.length = 0;
-  //gametable.watchZone = Array(9).fill(9);
   const collumnIndex = gametable.figures.findIndex((collumn) => collumn[0].corX < loc.x
 && loc.x < (collumn[0].corX + widthFigure));
   const collumnArr = gametable.figures[0];

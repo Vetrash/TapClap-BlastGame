@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const PATHS = {
   src: path.resolve(__dirname, 'src'),
   dist: path.resolve(__dirname, 'dist'),
-}
+};
 
 module.exports = {
   entry: './src/index.js',
@@ -25,11 +25,11 @@ module.exports = {
       {
         test: /\.js$/i,
         exclude: /node_modules/,
-        use: { loader: 'babel-loader' }
+        use: { loader: 'babel-loader' },
       },
       {
         test: /\.html$/i,
-        loader: 'html-loader'
+        loader: 'html-loader',
       },
       {
         test: /\.(sa|sc|c)ss$/i,
@@ -38,35 +38,35 @@ module.exports = {
           { loader: 'css-loader' },
           { loader: 'postcss-loader' },
           { loader: 'resolve-url-loader' },
-          { loader: 'sass-loader', options: { sourceMap: true} }
-        ]
+          { loader: 'sass-loader', options: { sourceMap: true } },
+        ],
       },
       {
         test: /\.(ttf|eot|otf|woff2?)$/i,
         type: 'asset/resource',
-        generator: { filename: 'assets/fonts/[name][ext]' }
+        generator: { filename: 'assets/fonts/[name][ext]' },
       },
       {
         test: /\.(jpe?g|png|gif|svg|webp|ico)$/i,
         type: 'asset/resource',
-        generator: { filename: 'assets/images/[name][ext]' }
+        generator: { filename: 'assets/images/[name][ext]' },
       },
       {
         test: /\.(mp4)$/i,
         type: 'asset/resource',
-        generator: { filename: 'assets/videos/[name][ext]' }
+        generator: { filename: 'assets/videos/[name][ext]' },
       },
       {
         test: /\.(mp3)$/i,
         type: 'asset/resource',
-        generator: { filename: 'assets/media/[name][ext]' }
+        generator: { filename: 'assets/media/[name][ext]' },
       },
       {
         test: /\.(docx?|xlsx?|pptx?|pdf)$/i,
         type: 'asset/resource',
-        generator: { filename: 'assets/docs/[name][ext]' }
-      }
-    ]
+        generator: { filename: 'assets/docs/[name][ext]' },
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -78,5 +78,5 @@ module.exports = {
         { from: `${PATHS.src}/assets/images`, to: `${PATHS.dist}/assets/images` },
       ],
     }),
-  ]
+  ],
 };
