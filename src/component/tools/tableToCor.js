@@ -1,24 +1,25 @@
 import getSettings from '../../settings.js';
+import getGState from '../../globalState.js';
 
 const {
   gapX, gapY, sizefigureX, sizefigureY, startDrawY,
 } = getSettings().gameMap;
-const { widthFigure, heightFigure } = getSettings().figure;
-const { widthLayers } = getSettings();
 
-const borderGapX = (widthLayers - ((widthFigure + gapX) * sizefigureX)) / 2;
-const endDraw = startDrawY + sizefigureY * (heightFigure + gapY);
 const tableToCor = (pos) => {
+  const { gameTableLayer } = getGState().canvasLayer;
+  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
+  const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
   if (Array.isArray(pos)) {
     const solution = pos.map((elem) => {
-      const y = endDraw - elem.row * (heightFigure + gapY) - heightFigure;
-      const x = borderGapX + elem.col * (widthFigure + gapX);
+      const y = endDraw - elem.row * (dataFigures.height + gapY) - dataFigures.height;
+      const x = borderGapX + elem.col * (dataFigures.width + gapX);
       return { y, x };
     });
     return solution;
   }
-  const y = endDraw - pos.col * (heightFigure + gapY) - heightFigure;
-  const x = borderGapX + pos.row * (widthFigure + gapX);
+  const y = endDraw - pos.col * (dataFigures.height + gapY) - dataFigures.height;
+  const x = borderGapX + pos.row * (dataFigures.width + gapX);
   return { y, x };
 };
 

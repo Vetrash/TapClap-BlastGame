@@ -8,26 +8,26 @@ import getGState from '../../globalState.js';
 import managerEndGame from '../endgame/managerEndGame.js';
 import getSpell from '../spells/getSpell.js';
 
-const { increaseSet, coastFigure, minChainToSBlock } = getSettings();
+const {
+  increaseSet, coastFigure, minChainToSBlock, minLengthChain,
+} = getSettings();
+const { arrSpell } = getSettings().spells;
+const { sizefigureX, sizefigureY } = getSettings().gameMap;
 
 const checkPostClick = () => {
   const { gametable, combo, stateImg } = getGState();
-  if (gametable.chainArr.length >= 2) {
-    const arrSupBlock = [];
-    gametable.chainArr.forEach((elem) => {
-      const { type } = gametable.figures[elem.col][elem.row];
-      const index = _.findIndex(stateImg.dataSupBlock, { name: type });
-      if (index !== -1) {
-        const x = gametable.figures[elem.col][elem.row].corX;
-        const y = gametable.figures[elem.col][elem.row].corY;
-        arrSupBlock.push({ loc: { x, y }, type });
-      }
-    });
-    if (arrSupBlock.length !== 0) {
-      arrSupBlock.forEach((elem) => {
-        getSpell(elem.loc, elem.type);
-      });
-    } else if (gametable.chainArr.length >= minChainToSBlock) {
+  if (gametable.chainArr.length === 1) {
+    const elem = gametable.chainArr[0];
+    const { type, corX, corY } = gametable.figures[elem.col][elem.row];
+    if (_.includes(arrSpell, type)) {
+      getSpell({ y: corY, x: corX }, type);
+    }
+  }
+  if (gametable.chainArr.length >= minLengthChain) {
+    const arrType = gametable.chainArr.map((elem) => gametable.figures[elem.col][elem.row].type);
+    const supBlocksInChain = _.intersection(arrType, arrSpell);
+    console.log(supBlocksInChain);
+    if (gametable.chainArr.length >= minChainToSBlock && supBlocksInChain.length === 0) {
       const indexType = Math.floor(Math.random() * stateImg.dataSupBlock.length);
       const img = stateImg.dataSupBlock[indexType].offCanvas;
       const type = stateImg.dataSupBlock[indexType].name;
@@ -39,7 +39,11 @@ const checkPostClick = () => {
     }
     getHandingFigure();
     createNewFigures();
-    getGState().score.value += Math.round(increaseSet ** gametable.chainArr.length * coastFigure);
+    if (gametable.chainArr.length < sizefigureX * sizefigureY) {
+      getGState().score.value += Math.round(increaseSet ** gametable.chainArr.length * coastFigure);
+    } else {
+      getGState().score.value += Math.round(gametable.chainArr.length * coastFigure);
+    }
     updateScore();
     clearBrokenFigures();
     getGState().gameStatus.value = 'fuling';

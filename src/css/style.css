@@ -15,7 +15,6 @@ body{
 
 canvas{
   position: absolute;
-  height: 100vh;
   margin-left: auto;
   margin-right: auto;
   left: 0;
@@ -34,4 +33,3 @@ display: flex;
 .f-collumn{
   flex-direction: column;
 }
-

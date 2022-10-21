@@ -5,11 +5,11 @@ const {
   maxWidthLoadLine, heightLoadLine, gapLoadLineX, gapLoadLineY,
 } = getSettings().loadBar;
 
-export const updateProgress = () => {
+export const updateProgress = (dt) => {
   const { score } = getGState();
   const deltaScore = score.value - score.forProgress;
   if (deltaScore > 30) {
-    score.forProgress += 10;
+    score.forProgress += (1000 * dt);
   } else {
     score.forProgress += deltaScore;
   }

@@ -1,8 +1,7 @@
 import getGState from '../globalState.js';
-import getSettings from '../settings.js';
 
-const { widthLayers, heightLayers } = getSettings();
 const { canvasLayer } = getGState();
+const { praiseLayer } = canvasLayer;
 const ctx = canvasLayer.praiseLayer.getContext('2d');
 const corLastPraise = { x: 0, y: 0 };
 let timerId;
@@ -15,8 +14,8 @@ const renderPraise = () => {
   const { stateImg, combo } = getGState();
   clearTimeout(timerId);
   clearPraise();
-  const corX = Math.floor(Math.random() * (widthLayers - 1200)) + 600;
-  const corY = Math.floor(Math.random() * (heightLayers - 1200)) + 600;
+  const corX = Math.floor(Math.random() * (praiseLayer.width - 1200)) + 600;
+  const corY = Math.floor(Math.random() * (praiseLayer.height - 1200)) + 600;
   corLastPraise.x = corX;
   corLastPraise.y = corY;
   switch (combo.value) {

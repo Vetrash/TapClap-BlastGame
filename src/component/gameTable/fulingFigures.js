@@ -2,18 +2,22 @@ import getSettings from '../../settings.js';
 import getGState from '../../globalState.js';
 
 const {
-  gapY, sizefigureY, startDrawY,
+  gapY, sizefigureX, sizefigureY, startDrawY,
 } = getSettings().gameMap;
-const { heightFigure, speedFuling } = getSettings().figure;
+const { speedFuling } = getSettings().figure;
 
 const fulingFigures = (dt) => {
   const { gametable, gameStatus, isRender } = getGState();
+  if (gameStatus.value === 'wait') {
+    isRender.figures = false;
+  }
+  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
   let sumStopedFigures = 0;
-  const endDraw = startDrawY + sizefigureY * (heightFigure + gapY);
-  for (let i = 0; i < 9; i += 1) {
-    if (gametable.watchZone[i] !== 9) {
-      for (let k = 0; k < 9; k += 1) {
-        const stopCorY = endDraw - k * (heightFigure + gapY) - heightFigure;
+  const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
+  for (let i = 0; i < sizefigureX; i += 1) {
+    if (gametable.watchZone[i] !== sizefigureY) {
+      for (let k = 0; k < sizefigureY; k += 1) {
+        const stopCorY = endDraw - k * (dataFigures.height + gapY) - dataFigures.height;
         if (gametable.figures[i][k].corY < stopCorY) {
           gametable.figures[i][k].corY += (dt * speedFuling);
         } else {
@@ -22,13 +26,12 @@ const fulingFigures = (dt) => {
         }
       }
     } else {
-      sumStopedFigures += 9;
+      sumStopedFigures += sizefigureY;
     }
   }
 
-  if (sumStopedFigures === 81) {
+  if (sumStopedFigures === sizefigureX * sizefigureY) {
     gameStatus.value = 'wait';
-    isRender.figures = false;
   } else {
     isRender.figures = true;
   }

@@ -4,24 +4,28 @@ import checkPostClick from '../gameTable/checkPostClick.js';
 import getGState from '../../globalState.js';
 
 const { gapY, startDrawY } = getSettings().gameMap;
-const { heightFigure } = getSettings().figure;
 const {
-  amount, widthSpellIcon, gapX, prise, arrSpell, quickSpell,
+  amount, gapX, prise, arrSpell, quickSpell, doubleClickSpell,
 } = getSettings().spells;
-const { widthLayers } = getSettings();
-
-const borderGapX = (widthLayers - ((widthSpellIcon + gapX) * amount)) / 2;
-const StartDrawY = startDrawY + 9 * (heightFigure + gapY) + 140;
+const { sizefigureY } = getSettings().gameMap;
 
 export const handlerSpell = (loc) => {
+  const { btnSpell } = getGState().stateImg.dataSpells;
+  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const { staticLayer } = getGState().canvasLayer;
+  const borderGapX = (staticLayer.width - ((btnSpell.width + gapX) * amount)) / 2;
+  const StartDrawY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
   const { coin, ActivSpell } = getGState();
   if (loc.y > StartDrawY + 20 && loc.y < StartDrawY + 20 + 439) {
-    const index = Math.floor((loc.x - borderGapX) / (widthSpellIcon + gapX));
+    const index = Math.floor((loc.x - borderGapX) / (btnSpell.width + gapX));
     const nameSpell = arrSpell[index];
     if (ActivSpell.value === nameSpell) {
       ActivSpell.value = 'none';
     } else if (prise[nameSpell] <= coin.value) {
       ActivSpell.value = nameSpell;
+      if (doubleClickSpell.includes(nameSpell)) {
+        getGState().gametable.arrClick.length = 0;
+      }
       if (quickSpell.includes(nameSpell)) {
         getSpell();
         checkPostClick();

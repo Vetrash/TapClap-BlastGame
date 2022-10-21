@@ -9,9 +9,11 @@ const dataFugures = [
   './assets/images/yellow_291.png',
 ];
 const superBlocks = [
-  './assets/images/superBlock.png',
+  './assets/images/killAll.png',
   './assets/images/bomb.png',
   './assets/images/lightning.png',
+  './assets/images/killRow.png',
+  './assets/images/killCol.png',
 ];
 
 const dataSpells = [
@@ -64,6 +66,7 @@ const preloadAllimg = async () => {
       .then((img) => (
         {
           btnSpell: img[0],
+          spellIcon: img[1],
           port: img[1],
           bomb: img[2],
           lightning: img[3],

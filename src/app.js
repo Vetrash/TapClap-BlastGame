@@ -18,12 +18,12 @@ import renderWin from './component/endgame/renderWin.js';
 import renderLose from './component/endgame/renderLose.js';
 // eslint-disable-next-line import/no-cycle
 import endGameHandler from './component/endgame/endGameHandler.js';
+import shuffle from './component/shuffle.js';
 
 let lastTime;
 
-const { gapY, startDrawY } = getSettings().gameMap;
-const { heightFigure } = getSettings().figure;
-const StartDrawSpellY = startDrawY + 9 * (heightFigure + gapY) + 140;
+const { gapY, startDrawY, sizefigureY } = getSettings().gameMap;
+const { minLengthChain } = getSettings();
 
 const update = (dt) => {
   if (getGState().gameStatus.value !== 'win' || getGState().gameStatus.value !== 'losing') {
@@ -31,7 +31,7 @@ const update = (dt) => {
       fulingFigures(dt);
     }
     if (getGState().score.value !== getGState().score.forProgress) {
-      updateProgress();
+      updateProgress(dt);
       getCoins();
     }
   }
@@ -41,7 +41,8 @@ const render = () => {
   if (getGState().isRender.figures === true) {
     renderAllPuff();
     renderFigures();
-  } else if (getGState().gametable.portFig.length !== 0) {
+  }
+  if (getGState().gametable.portFig.length !== 0) {
     renderAllPuff();
     renderPort();
     renderUIActive();
@@ -71,11 +72,18 @@ const mineLoop = () => {
   const dt = (now - lastTime) / 1000.0;
   update(dt);
   render();
+  if (getGState().gametable.chainArr.length > 0
+      && getGState().gameStatus.value === 'wait') {
+    shuffle();
+    getGState().gametable.chainArr.length = 0;
+  }
   lastTime = now;
   requestAnimationFrame(mineLoop);
 };
 
 const eventHandler = (e) => {
+  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const StartDrawSpellY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
   if (getGState().gameStatus.value === 'gameover') {
     const canvas = getGState().canvasLayer.gameTableLayer;
     const loc = windowToCanvasCor(canvas, e.clientX, e.clientY);
@@ -91,7 +99,7 @@ const eventHandler = (e) => {
     } else {
       handlerSpell(loc);
     }
-    if (getGState().gametable.chainArr.length !== 0) {
+    if (getGState().gametable.chainArr.length >= minLengthChain) {
       managerPuff(getGState().gametable.chainArr);
     } else if (getGState().gametable.portFig.length !== 0) {
       managerPuff(getGState().gametable.portFig);

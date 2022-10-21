@@ -9,7 +9,10 @@ const spellPort = (loc) => {
   const { arrClick, figures } = gametable;
 
   if (arrClick.length < 2) {
-    arrClick.push(loc);
+    const corFig = findeIndexColRow(loc, figures);
+    if (corFig.col !== -1 && corFig.row !== -1) {
+      arrClick.push(loc);
+    }
   }
   if (arrClick.length === 2) {
     const firstFig = findeIndexColRow(arrClick[0], figures);

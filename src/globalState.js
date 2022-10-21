@@ -1,3 +1,5 @@
+import getSettings from './settings.js';
+
 const gameTableLayer = document.getElementById('game-layer');
 const staticLayer = document.getElementById('static-layer');
 const staticLayerUp = document.getElementById('static-layer-up');
@@ -5,6 +7,7 @@ const UILayer = document.getElementById('UI-layer');
 const effectLayer = document.getElementById('effect-layer');
 const praiseLayer = document.getElementById('praise-layer');
 const msgLayer = document.getElementById('msg-layer');
+const { sizefigureX, sizefigureY } = getSettings().gameMap;
 
 const globalState = {
 
@@ -26,7 +29,7 @@ const globalState = {
     handingFigure: [],
     stopFigures: [],
     status: 'wait',
-    watchZone: Array(9).fill(9),
+    watchZone: Array(sizefigureX).fill(sizefigureY),
     arrClick: [],
     portFig: [],
   },

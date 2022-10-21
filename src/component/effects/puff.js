@@ -23,6 +23,12 @@ export const renderAllPuff = () => {
   arrCorPuff.length = 0;
 };
 
+export const renderAllPuffinArr = (arr) => {
+  arr.forEach((elem) => {
+    renderPuff(elem);
+  });
+};
+
 export const managerPuff = (arrCor) => {
   arrCorPuff = tableToCor(arrCor);
 };
