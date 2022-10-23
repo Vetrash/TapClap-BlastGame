@@ -26,10 +26,10 @@ const renderCoinBtn = (imgs, gapBorder, startDrawBtnY, ctx) => {
   const posX = staticLayer.width - gapBorder - imgs.dataUI.money.width;
   ctx.drawImage(imgs.dataUI.money, posX, startDrawBtnY);
 };
-const renderPauseBtn = (imgs, ctx) => {
+/* const renderPauseBtn = (imgs, ctx) => {
   const posX = staticLayer.width - imgs.dataUI.pause.width;
   ctx.drawImage(imgs.dataUI.pause, posX, 0);
-};
+}; */
 
 const renderUIStatic = () => {
   const barImg = getGState().stateImg.dataUI.statysBar;
@@ -45,6 +45,6 @@ const renderUIStatic = () => {
   renderClickBtn(imgs, gapBorder, startDrawBtnY, ctx);
   renderScoreBtn(imgs, startDrawBtnY, ctx);
   renderCoinBtn(imgs, gapBorder, startDrawBtnY, ctx);
-  renderPauseBtn(imgs, ctx);
+  // renderPauseBtn(imgs, ctx);
 };
 export default renderUIStatic;

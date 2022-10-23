@@ -1,5 +1,5 @@
 import preload from './preloadImg.js';
-import createOffscreenCanvas from '../../tools/createOffscreenCanvas.js';
+import createOffscreenCanvas from './createOffscreenCanvas.js';
 
 const dataFugures = [
   './assets/images/blue_294.png',

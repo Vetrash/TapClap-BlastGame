@@ -1,4 +1,4 @@
-import getGState from '../globalState.js';
+import getGState from '../../globalState.js';
 
 const findeIndexColRow = (loc, figures) => {
   const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;

@@ -10,12 +10,11 @@ const msgLayer = document.getElementById('msg-layer');
 const { sizefigureX, sizefigureY } = getSettings().gameMap;
 
 const globalState = {
-
   gameStatus: { value: 'wait' },
   ActivSpell: { value: 'none' },
   combo: { value: 0 },
   coin: { value: 30 },
-  click: { value: 1 },
+  click: { value: 21 },
   score: {
     value: 0, str: '0', forProgress: 0, borderPrise: 1000,
   },
@@ -28,7 +27,6 @@ const globalState = {
     watchChainArr: [],
     handingFigure: [],
     stopFigures: [],
-    status: 'wait',
     watchZone: Array(sizefigureX).fill(sizefigureY),
     arrClick: [],
     portFig: [],

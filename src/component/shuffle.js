@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import checkChain from '../tools/checkChain.js';
+import checkChain from './tools/checkChain.js';
 import getSettings from '../settings.js';
 import getGState from '../globalState.js';
 import { renderFigures } from './gameTable/rendersGameTable.js';

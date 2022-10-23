@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import getGState from '../globalState.js';
-import getSettings from '../settings.js';
+import getGState from '../../globalState.js';
+import getSettings from '../../settings.js';
 
 const { sizefigureX, sizefigureY } = getSettings().gameMap;
 const { minLengthChain } = getSettings();

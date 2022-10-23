@@ -41,7 +41,6 @@ const checkPostClick = () => {
     managerEndGame();
     ActivSpell.value = 'none';
   }
-  console.log(ActivSpell.value);
   combo.value = gametable.chainArr.length;
 };
 export default checkPostClick;

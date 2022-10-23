@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import findeIndexColRow from '../../tools/findeIndexColRow.js';
+import findeIndexColRow from '../tools/findeIndexColRow.js';
 import getSettings from '../../settings.js';
 import getGState from '../../globalState.js';
 
@@ -12,22 +12,20 @@ const spellPort = (loc) => {
   if (arrClick.length < 2) {
     const corFig = findeIndexColRow(loc, figures);
     if (corFig.col !== -1 && corFig.row !== -1) {
-      if (!_.includes(arrClick, loc)) {
-        arrClick.push(loc);
+      if (!_.some(arrClick, corFig)) {
+        arrClick.push(corFig);
       }
     }
   }
   if (arrClick.length === 2) {
-    const firstFig = findeIndexColRow(arrClick[0], figures);
-    const secondFig = findeIndexColRow(arrClick[1], figures);
-    const imgFirst = figures[firstFig.col][firstFig.row].img;
-    const typeFirst = figures[firstFig.col][firstFig.row].type;
-    figures[firstFig.col][firstFig.row].img = figures[secondFig.col][secondFig.row].img;
-    figures[firstFig.col][firstFig.row].type = figures[secondFig.col][secondFig.row].type;
-    figures[secondFig.col][secondFig.row].img = imgFirst;
-    figures[secondFig.col][secondFig.row].type = typeFirst;
-    gametable.portFig.push(firstFig);
-    gametable.portFig.push(secondFig);
+    const imgFirst = figures[arrClick[0].col][arrClick[0].row].img;
+    const typeFirst = figures[arrClick[0].col][arrClick[0].row].type;
+    figures[arrClick[0].col][arrClick[0].row].img = figures[arrClick[1].col][arrClick[1].row].img;
+    figures[arrClick[0].col][arrClick[0].row].type = figures[arrClick[1].col][arrClick[1].row].type;
+    figures[arrClick[1].col][arrClick[1].row].img = imgFirst;
+    figures[arrClick[1].col][arrClick[1].row].type = typeFirst;
+    gametable.portFig.push(arrClick[0]);
+    gametable.portFig.push(arrClick[1]);
     coin.value -= prise.port;
     ActivSpell.value = 'none';
     arrClick.length = 0;
