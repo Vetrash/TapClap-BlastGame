@@ -46,6 +46,7 @@ const globalState = {
     figures: false,
     port: false,
     ui: false,
+    spellSekect: false,
     endGame: false,
   },
 };

@@ -11,12 +11,13 @@ const createNewFigures = () => {
   const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
 
   const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
-  const countAddet = Array(9).fill(0);
+  const countAddet = Array(sizefigureX).fill(0);
   gametable.chainArr.forEach((elem) => {
-    if (countAddet[elem.col] <= 9) {
+    if (countAddet[elem.col] <= startDrawY) {
       countAddet[elem.col] += 1;
     }
   });
+
   countAddet.forEach((elem, index) => {
     if (elem !== 0) {
       const corX = borderGapX + index * (dataFigures.width + gapX);

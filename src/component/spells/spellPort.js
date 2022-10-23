@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import findeIndexColRow from '../../tools/findeIndexColRow.js';
 import getSettings from '../../settings.js';
 import getGState from '../../globalState.js';
@@ -11,7 +12,9 @@ const spellPort = (loc) => {
   if (arrClick.length < 2) {
     const corFig = findeIndexColRow(loc, figures);
     if (corFig.col !== -1 && corFig.row !== -1) {
-      arrClick.push(loc);
+      if (!_.includes(arrClick, loc)) {
+        arrClick.push(loc);
+      }
     }
   }
   if (arrClick.length === 2) {

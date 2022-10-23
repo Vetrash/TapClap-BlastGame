@@ -33,7 +33,7 @@ const chain = (col, row, state) => {
 
 const spellBomb = (loc, mod = 'pay') => {
   const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
-  const { gametable, coin, ActivSpell } = getGState();
+  const { gametable, coin } = getGState();
   const collumnIndex = gametable.figures.findIndex((collumn) => collumn[0].corX <= loc.x
     && loc.x <= (collumn[0].corX + dataFigures.width));
 
@@ -42,7 +42,6 @@ const spellBomb = (loc, mod = 'pay') => {
     && loc.y <= (elem.corY + dataFigures.height));
   chain(collumnIndex, rowIndex, gametable);
   if (mod === 'pay') { coin.value -= prise.bomb; }
-  ActivSpell.value = 'none';
 };
 
 export default spellBomb;

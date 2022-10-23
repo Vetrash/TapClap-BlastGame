@@ -1,10 +1,10 @@
 const settings = {
   minLengthChain: 2,
   coinPrise: 1,
-  minChainToSBlock: 8,
+  minChainToSBlock: 7,
   borderPrise: 1000,
   increaseSet: 1.1,
-  coastLevel: 40000,
+  coastLevel: 30000,
   coastFigure: 500,
   shufleMax: 2,
   loadBar: {

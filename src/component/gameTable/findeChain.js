@@ -46,6 +46,8 @@ const findeChain = (loc) => {
   const rowIndex = collumnArr.findIndex((elem) => elem.corY < loc.y
       && loc.y < (elem.corY + dataFigures.height));
   gametable.watchChainArr.length = 0;
-  chain(collumnIndex, rowIndex, gametable);
+  if (collumnIndex !== -1 && rowIndex !== -1) {
+    chain(collumnIndex, rowIndex, gametable);
+  }
 };
 export default findeChain;

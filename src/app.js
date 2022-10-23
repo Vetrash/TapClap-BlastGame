@@ -25,7 +25,7 @@ let lastTime;
 const { gapY, startDrawY, sizefigureY } = getSettings().gameMap;
 const { minLengthChain } = getSettings();
 
-const update = (dt) => {
+const update = async (dt) => {
   if (getGState().gameStatus.value !== 'win' || getGState().gameStatus.value !== 'losing') {
     if (getGState().gameStatus.value === 'fuling') {
       fulingFigures(dt);
@@ -37,10 +37,13 @@ const update = (dt) => {
   }
 };
 
-const render = () => {
+const render = async () => {
   if (getGState().isRender.figures === true) {
     renderAllPuff();
     renderFigures();
+    if (getGState().gameStatus.value === 'wait') {
+      getGState().isRender.figures = false;
+    }
   }
   if (getGState().gametable.portFig.length !== 0) {
     renderAllPuff();
@@ -54,8 +57,9 @@ const render = () => {
     renderPraise();
     getGState().combo.value = 0;
   }
-  if (getGState().ActivSpell.value !== null) {
+  if (getGState().isRender.spellSekect === true) {
     selectSpell();
+    getGState().isRender.spellSekect = false;
   }
   if (getGState().gameStatus.value === 'win') {
     renderWin();
@@ -96,8 +100,10 @@ const eventHandler = (e) => {
       handlerUI(loc);
     } else if (loc.y < StartDrawSpellY) {
       handlerGameTable(loc);
+      getGState().isRender.spellSekect = true;
     } else {
       handlerSpell(loc);
+      getGState().isRender.spellSekect = true;
     }
     if (getGState().gametable.chainArr.length >= minLengthChain) {
       managerPuff(getGState().gametable.chainArr);

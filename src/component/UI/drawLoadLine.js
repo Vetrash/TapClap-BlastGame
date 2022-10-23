@@ -19,9 +19,7 @@ const drawLoadLine = (progress, startDrawX, ctx) => {
   const x1 = startDrawX + gapLoadLineX;
   const y1 = gapLoadLineY;
   let radius = heightLoadLine / 2;
-  const x2 = progress * maxWidthLoadLine >= 2 * radius
-    ? x1 + (progress * maxWidthLoadLine)
-    : x1 + 2 * radius;
+  const x2 = x1 + 2 * radius + (progress * (maxWidthLoadLine - (2 * radius)));
   const y2 = y1 + heightLoadLine;
   const gr = ctx.createLinearGradient(x1, y2, x1, y1);
   gr.addColorStop(0.0, '#60ff00');

@@ -8,9 +8,7 @@ const { speedFuling } = getSettings().figure;
 
 const fulingFigures = (dt) => {
   const { gametable, gameStatus, isRender } = getGState();
-  if (gameStatus.value === 'wait') {
-    isRender.figures = false;
-  }
+
   const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
   let sumStopedFigures = 0;
   const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
