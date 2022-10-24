@@ -1,7 +1,7 @@
 import getGState from '../../globalState.js';
 
 const findeIndexColRow = (loc, figures) => {
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const collumnIndex = figures.findIndex((collumn) => collumn[0].corX < loc.x
     && loc.x < (collumn[0].corX + dataFigures.width));
   const collumnArr = figures[0];

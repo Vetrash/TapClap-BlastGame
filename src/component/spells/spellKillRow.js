@@ -5,7 +5,7 @@ import getSettings from '../../settings.js';
 const { sizefigureX } = getSettings().gameMap;
 
 const spellKillRow = (loc) => {
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const { gametable } = getGState();
   const { chainArr } = gametable;
   const collumnArr = gametable.figures[0];

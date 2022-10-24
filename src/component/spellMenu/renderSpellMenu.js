@@ -9,7 +9,7 @@ const {
 const { sizefigureY } = getSettings().gameMap;
 
 export const clearSelected = () => {
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const StartDrawY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
   const canvas = getGState().canvasLayer.UILayer;
   const ctx = canvas.getContext('2d');
@@ -20,7 +20,7 @@ export const selectSpell = () => {
   clearSelected();
   const canvas = getGState().canvasLayer.UILayer;
   const { btnSpell } = getGState().stateImg.dataSpells;
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const borderGapX = (canvas.width - ((btnSpell.width + gapX) * amount)) / 2;
   const StartDrawY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
 
@@ -45,7 +45,7 @@ const renderSpellMenu = () => {
   const { staticLayer } = getGState().canvasLayer;
   const staticCtx = staticLayer.getContext('2d');
   const { spellIcon, btnSpell } = getGState().stateImg.dataSpells;
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const borderGapX = (staticLayer.width - ((btnSpell.width + gapX) * amount)) / 2;
   const StartDrawY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
   staticCtx.fillStyle = '#ffffff';

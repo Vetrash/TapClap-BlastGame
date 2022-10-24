@@ -98,7 +98,7 @@ const mineLoop = () => {
 };
 
 const eventHandler = (e) => {
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const StartDrawSpellY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
   if (getGState().gameStatus.value === 'gameover') {
     const canvas = getGState().canvasLayer.gameTableLayer;

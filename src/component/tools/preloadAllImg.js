@@ -1,7 +1,7 @@
 import preload from './preloadImg.js';
 import createOffscreenCanvas from './createOffscreenCanvas.js';
 
-const dataFugures = [
+const dataFigures = [
   './assets/images/blue_294.png',
   './assets/images/green_290.png',
   './assets/images/purple_293.png',
@@ -60,7 +60,7 @@ const dataPuff = [
 
 const preloadAllimg = async () => {
   const state = await Promise.all([
-    preload(dataFugures)
+    preload(dataFigures)
       .then((img) => {
         const arrCanvas = img.map((elem) => createOffscreenCanvas(elem, 171, 192));
         return arrCanvas;
@@ -118,7 +118,7 @@ const preloadAllimg = async () => {
   ])
     .then((res) => (
       {
-        dataFugures: res[0],
+        dataFigures: res[0],
         dataSpells: res[1],
         dataUI: res[2],
         dataPraise: res[3],

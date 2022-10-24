@@ -9,7 +9,7 @@ const {
 const createGameTable = () => {
   const { gametable, canvasLayer } = getGState();
   const { gameTableLayer } = canvasLayer;
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
 
   const imgs = getGState().stateImg;
   const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
@@ -25,11 +25,11 @@ const createGameTable = () => {
   for (let row = 0; row < sizefigureX; row += 1) {
     const collumnFigures = [];
     for (let collumn = 0; collumn < sizefigureY; collumn += 1) {
-      const indexType = Math.floor(Math.random() * imgs.dataFugures.length);
+      const indexType = Math.floor(Math.random() * imgs.dataFigures.length);
       const corY = endDraw - collumn * (dataFigures.height + gapY) - dataFigures.height;
       const corX = borderGapX + row * (dataFigures.width + gapX);
-      const img = imgs.dataFugures[indexType].offCanvas;
-      const type = imgs.dataFugures[indexType].name;
+      const img = imgs.dataFigures[indexType].offCanvas;
+      const type = imgs.dataFigures[indexType].name;
       collumnFigures.push({
         corX, corY, img, type,
       });
@@ -37,7 +37,7 @@ const createGameTable = () => {
     arrFigures.push(collumnFigures);
   }
   gametable.figures = [...arrFigures];
-  gametable.fuguresImg = imgs.dataFugures;
+  gametable.fuguresImg = imgs.dataFigures;
 };
 
 export default createGameTable;

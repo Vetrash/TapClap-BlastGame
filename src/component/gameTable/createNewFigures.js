@@ -8,7 +8,7 @@ const {
 const createNewFigures = () => {
   const { gametable } = getGState();
   const { gameTableLayer } = getGState().canvasLayer;
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
 
   const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
   const countAddet = Array(sizefigureX).fill(0);

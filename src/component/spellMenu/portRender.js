@@ -3,12 +3,12 @@ import tableToCor from '../tools/tableToCor.js';
 
 export const clearSelectedPort = () => {
   const { arrClick } = getGState().gametable;
-  const { dataFugures } = getGState().stateImg;
+  const { dataFigures } = getGState().stateImg;
   const canvas = getGState().canvasLayer.UILayer;
   const ctx = canvas.getContext('2d');
   const loc = tableToCor(arrClick[0]);
-  const widthFig = dataFugures[0].offCanvas.width;
-  const heightFig = dataFugures[0].offCanvas.height;
+  const widthFig = dataFigures[0].offCanvas.width;
+  const heightFig = dataFigures[0].offCanvas.height;
   ctx.clearRect(loc.x, loc.y, widthFig, heightFig);
 };
 

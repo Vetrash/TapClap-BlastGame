@@ -21,7 +21,7 @@ export const renderFigures = () => {
   const { gametable } = getGState();
   const { gameTableLayer } = getGState().canvasLayer;
   const gameTableCtx = gameTableLayer.getContext('2d');
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
   const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
   drawSquareClip({
@@ -52,7 +52,7 @@ export const renderPort = () => {
   const { gametable } = getGState();
   const { gameTableLayer } = getGState().canvasLayer;
   const gameTableCtx = gameTableLayer.getContext('2d');
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
   const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
   gametable.portFig.forEach((elem) => {

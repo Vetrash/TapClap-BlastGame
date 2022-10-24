@@ -5,7 +5,7 @@ import getSettings from '../../settings.js';
 const { sizefigureY } = getSettings().gameMap;
 
 const spellKillCol = (loc) => {
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const { gametable } = getGState();
   const { chainArr } = gametable;
   const col = gametable.figures.findIndex((collumn) => collumn[0].corX <= loc.x

@@ -9,7 +9,7 @@ const { speedFuling } = getSettings().figure;
 const fulingFigures = (dt) => {
   const { gametable, gameStatus, isRender } = getGState();
 
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   let sumStopedFigures = 0;
   const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
   for (let i = 0; i < sizefigureX; i += 1) {

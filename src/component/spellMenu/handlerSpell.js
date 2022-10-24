@@ -11,7 +11,7 @@ const { sizefigureY } = getSettings().gameMap;
 
 export const handlerSpell = (loc) => {
   const { btnSpell } = getGState().stateImg.dataSpells;
-  const dataFigures = getGState().stateImg.dataFugures[0].offCanvas;
+  const dataFigures = getGState().stateImg.dataFigures[0].offCanvas;
   const { staticLayer } = getGState().canvasLayer;
   const borderGapX = (staticLayer.width - ((btnSpell.width + gapX) * amount)) / 2;
   const StartDrawY = startDrawY + sizefigureY * (dataFigures.height + gapY) + 140;
