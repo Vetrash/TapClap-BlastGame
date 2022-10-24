@@ -3,17 +3,31 @@ import tableToCor from '../tools/tableToCor.js';
 
 let arrCorPuff = [];
 
-const renderPuff = (cor, i = 0) => {
+const renderPuff = (cor) => {
   const imgs = getGState().stateImg.dataPuff;
   const canvas = getGState().canvasLayer.effectLayer;
   const ctx = canvas.getContext('2d');
-  if (i < imgs.length) {
-    ctx.clearRect(cor.x, cor.y, 200, 200);
-    ctx.drawImage(imgs[i].offCanvas, cor.x, cor.y);
-    setTimeout(renderPuff, 60, cor, i + 1);
-  } else {
-    ctx.clearRect(cor.x, cor.y, 200, 200);
-  }
+  let numFrame = 0;
+  let start = 0;
+  const frameDelay = 60;
+  const loop = (timestamp) => {
+    if (start === 0) { start = timestamp; }
+    const stepTime = timestamp - start;
+    if (stepTime >= frameDelay * numFrame) {
+      ctx.clearRect(cor.x, cor.y, 200, 200);
+      if (numFrame < imgs.length) {
+        ctx.drawImage(imgs[numFrame].offCanvas, cor.x, cor.y);
+        numFrame += 1;
+      }
+    }
+    if (numFrame >= imgs.length) {
+      ctx.clearRect(cor.x, cor.y, 200, 200);
+      window.cancelAnimationFrame(loop);
+    } else {
+      requestAnimationFrame(loop);
+    }
+  };
+  requestAnimationFrame(loop);
 };
 
 export const renderAllPuff = () => {

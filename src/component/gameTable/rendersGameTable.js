@@ -25,7 +25,7 @@ export const renderFigures = () => {
   const borderGapX = (gameTableLayer.width - ((dataFigures.width + gapX) * sizefigureX)) / 2;
   const endDraw = startDrawY + sizefigureY * (dataFigures.height + gapY);
   drawSquareClip({
-    x1: borderGapX - 30, x2: gameTableLayer.width - borderGapX + 30, y1: startDrawY - 20, y2: gameTableLayer.height, radius: 60, color: '#0d233d', canvas: gameTableLayer,
+    x1: borderGapX - 30, x2: gameTableLayer.width - borderGapX + 30, y1: startDrawY - 20, y2: endDraw + 10, radius: 75, color: 'white', canvas: gameTableLayer,
   });
   let startRenderCol = 0;
   let endRenderCol = sizefigureX - 1;

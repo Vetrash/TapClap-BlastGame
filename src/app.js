@@ -19,6 +19,9 @@ import renderLose from './component/endgame/renderLose.js';
 // eslint-disable-next-line import/no-cycle
 import endGameHandler from './component/endgame/endGameHandler.js';
 import shuffle from './component/shuffle.js';
+import { clearSelectedPort } from './component/spellMenu/portRender.js';
+import animFramePolifil from './component/tools/animFramePolifil.js';
+import managerEndGame from './component/endgame/managerEndGame.js';
 
 let lastTime;
 
@@ -26,7 +29,7 @@ const { gapY, startDrawY, sizefigureY } = getSettings().gameMap;
 const { minLengthChain } = getSettings();
 
 const update = async (dt) => {
-  if (getGState().gameStatus.value !== 'win' || getGState().gameStatus.value !== 'losing') {
+  if (getGState().gameStatus.value !== 'gameover') {
     if (getGState().gameStatus.value === 'fuling') {
       fulingFigures(dt);
     }
@@ -35,39 +38,48 @@ const update = async (dt) => {
       getCoins();
     }
   }
+  if (getGState().gameStatus.value === 'wait') {
+    managerEndGame();
+  }
 };
 
 const render = async () => {
-  if (getGState().isRender.figures === true) {
-    renderAllPuff();
-    renderFigures();
-    if (getGState().gameStatus.value === 'wait') {
-      getGState().isRender.figures = false;
+  if (getGState().gameStatus.value !== 'gameover') {
+    if (getGState().isRender.figures === true) {
+      renderAllPuff();
+      renderFigures();
+      if (getGState().gameStatus.value === 'wait') {
+        getGState().isRender.figures = false;
+      }
     }
-  }
-  if (getGState().gametable.portFig.length !== 0) {
-    renderAllPuff();
-    renderPort();
-    renderUIActive();
-  }
-  if (getGState().score.value !== getGState().score.forProgress) {
-    renderUIActive();
-  }
-  if (getGState().combo.value > 3) {
-    renderPraise();
-    getGState().combo.value = 0;
-  }
-  if (getGState().isRender.spellSekect === true) {
-    selectSpell();
-    getGState().isRender.spellSekect = false;
-  }
-  if (getGState().gameStatus.value === 'win') {
-    renderWin();
-    getGState().gameStatus.value = 'gameover';
-  }
-  if (getGState().gameStatus.value === 'lose') {
-    renderLose();
-    getGState().gameStatus.value = 'gameover';
+    if (getGState().gametable.portFig.length !== 0) {
+      renderAllPuff();
+      renderPort();
+      renderUIActive();
+    }
+    if (getGState().score.value !== getGState().score.forProgress) {
+      renderUIActive();
+    }
+    if (getGState().combo.value > 3) {
+      renderPraise();
+      getGState().combo.value = 0;
+    }
+    if (getGState().isRender.spellSekect === true) {
+      selectSpell();
+      getGState().isRender.spellSekect = false;
+    }
+    if (getGState().gametable.arrClick.length !== 0
+    && getGState().ActivSpell.value !== 'port') {
+      console.log('clearport');
+      clearSelectedPort();
+      getGState().gametable.arrClick.length = 0;
+    }
+    if (getGState().gameStatus.value === 'win') {
+      renderWin();
+    }
+    if (getGState().gameStatus.value === 'lose') {
+      renderLose();
+    }
   }
 };
 
@@ -116,6 +128,7 @@ const eventHandler = (e) => {
 window.addEventListener('click', eventHandler);
 
 const App = () => {
+  animFramePolifil();
   createGameTable();
   renderStartGameTable();
   renderUIStatic();

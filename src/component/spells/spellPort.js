@@ -2,6 +2,7 @@ import _ from 'lodash';
 import findeIndexColRow from '../tools/findeIndexColRow.js';
 import getSettings from '../../settings.js';
 import getGState from '../../globalState.js';
+import { clearSelectedPort, selectPortPos } from '../spellMenu/portRender.js';
 
 const { prise } = getSettings().spells;
 
@@ -14,6 +15,7 @@ const spellPort = (loc) => {
     if (corFig.col !== -1 && corFig.row !== -1) {
       if (!_.some(arrClick, corFig)) {
         arrClick.push(corFig);
+        selectPortPos();
       }
     }
   }
@@ -28,6 +30,7 @@ const spellPort = (loc) => {
     gametable.portFig.push(arrClick[1]);
     coin.value -= prise.port;
     ActivSpell.value = 'none';
+    clearSelectedPort();
     arrClick.length = 0;
   }
 };

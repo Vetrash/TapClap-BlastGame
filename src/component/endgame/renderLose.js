@@ -9,5 +9,6 @@ export const renderLosing = () => {
   const posY = (canvasLayer.msgLayer.height / 2) - (stateImg.dataUI.endScore.height / 2)
     - stateImg.dataUI.lose.height;
   ctx.drawImage(stateImg.dataUI.lose, posX, posY);
+  getGState().gameStatus.value = 'gameover';
 };
 export default renderLosing;

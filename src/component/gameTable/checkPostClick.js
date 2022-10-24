@@ -5,7 +5,6 @@ import clearBrokenFigures from './clearBrokenFigures.js';
 import getSettings from '../../settings.js';
 import updateScore from '../updateScore.js';
 import getGState from '../../globalState.js';
-import managerEndGame from '../endgame/managerEndGame.js';
 import getSpell from '../spells/getSpell.js';
 
 const { minChainToSBlock, minLengthChain } = getSettings();
@@ -38,7 +37,6 @@ const checkPostClick = () => {
     updateScore();
     clearBrokenFigures();
     getGState().gameStatus.value = 'fuling';
-    managerEndGame();
     ActivSpell.value = 'none';
   }
   combo.value = gametable.chainArr.length;

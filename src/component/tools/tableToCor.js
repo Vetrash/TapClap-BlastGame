@@ -18,8 +18,8 @@ const tableToCor = (pos) => {
     });
     return solution;
   }
-  const y = endDraw - pos.col * (dataFigures.height + gapY) - dataFigures.height;
-  const x = borderGapX + pos.row * (dataFigures.width + gapX);
+  const y = endDraw - pos.row * (dataFigures.height + gapY) - dataFigures.height;
+  const x = borderGapX + pos.col * (dataFigures.width + gapX);
   return { y, x };
 };
 

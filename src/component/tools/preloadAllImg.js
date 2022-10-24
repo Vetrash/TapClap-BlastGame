@@ -23,6 +23,9 @@ const dataSpells = [
   './assets/images/lightning.png',
   './assets/images/star.png',
 ];
+const terget = [
+  './assets/images/target.png',
+];
 
 const dataUI = [
   './assets/images/brnBigLarge.png',
@@ -107,6 +110,11 @@ const preloadAllimg = async () => {
         const arrCanvas = img.map((elem) => createOffscreenCanvas(elem, 171, 192, 'center'));
         return arrCanvas;
       }),
+    preload(terget)
+      .then((img) => {
+        const arrCanvas = img.map((elem) => createOffscreenCanvas(elem, 171, 192, 'center'));
+        return arrCanvas;
+      }),
   ])
     .then((res) => (
       {
@@ -116,6 +124,7 @@ const preloadAllimg = async () => {
         dataPraise: res[3],
         dataPuff: res[4],
         dataSupBlock: res[5],
+        target: res[6],
       }
     ));
   return state;
