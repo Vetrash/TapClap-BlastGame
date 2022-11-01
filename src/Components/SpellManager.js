@@ -27,8 +27,8 @@ class SpellManager {
       this.setActivSpell(e.detail.value);
       this.arrClick.length = 0;
     });
-    window.addEventListener('clearSpell', () => {
-      this.clearActivSpell();
+    window.addEventListener('clearBtnSpellbyNotType', (e) => {
+      if (e.detail.value === 'none') { this.clearActivSpell(); }
     });
   }
 
@@ -74,7 +74,7 @@ class SpellManager {
     });
     this.activSpell = '';
     this.isSpellRight = false;
-    window.dispatchEvent(new CustomEvent('clearAllBtnSpell'));
+    window.dispatchEvent(new CustomEvent('clearBtnSpellbyNotType', { detail: { value: 'none' } }));
     return { chain, prise: this.prise.bomb, type: 'bomb' };
   }
 
@@ -87,7 +87,7 @@ class SpellManager {
       this.isSpellRight = false;
       const safeArrClick = _.cloneDeep(this.arrClick);
       this.arrClick.length = 0;
-      window.dispatchEvent(new CustomEvent('clearAllBtnSpell'));
+      window.dispatchEvent(new CustomEvent('clearBtnSpellbyNotType', { detail: { value: 'none' } }));
       return ({ chain: safeArrClick, prise: this.prise.port, type: 'port' });
     }
     return ({ chain: this.arrClick, prise: 0, type: 'port' });
@@ -106,7 +106,7 @@ class SpellManager {
     }
     this.activSpell = '';
     this.isSpellRight = false;
-    window.dispatchEvent(new CustomEvent('clearAllBtnSpell'));
+    window.dispatchEvent(new CustomEvent('clearBtnSpellbyNotType', { detail: { value: 'none' } }));
     return ({ chain, prise: this.prise.lightning, type: 'lightning' });
   }
 

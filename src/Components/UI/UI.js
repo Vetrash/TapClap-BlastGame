@@ -8,7 +8,7 @@ class UI {
   constructor(canvasLayers, imgs) {
     this.coins = 30;
     this.score = 0;
-    this.clicks = 21;
+    this.clicks = 2;
     this.canvasLayers = canvasLayers;
     this.imgs = imgs;
     this.coinPrise = 1;

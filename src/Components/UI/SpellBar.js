@@ -1,4 +1,4 @@
-import SpellBtn from './SpellBtn.js';
+import SpellButton from './Buttons/SpellButton.js';
 import TextBox from './TextBox.js';
 
 class SpellBar {
@@ -37,7 +37,7 @@ class SpellBar {
       const posY = StartDrawY + this.gapYborder;
       const imgSpell = this.imgs.dataSpells[nameSpell];
       const prise = this.prise[nameSpell];
-      const spellBtn = new SpellBtn(posX, posY, UILayer,
+      const spellBtn = new SpellButton(posX, posY, UILayer,
         staticLayer, this.btnSpell, imgSpell, nameSpell, prise);
       spellBtn.renderSpellBtn();
     }

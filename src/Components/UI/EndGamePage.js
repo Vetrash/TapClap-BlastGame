@@ -1,5 +1,5 @@
 import TextBox from './TextBox.js';
-import UIbtn from './UIbtn.js';
+import TextButton from './Buttons/TextButton.js';
 
 class EndGamePage {
   constructor(layer, baseImg, fontSize, btnLarge, imgTitles) {
@@ -41,7 +41,7 @@ class EndGamePage {
       window.dispatchEvent(new CustomEvent('onHandlers'));
       window.dispatchEvent(new CustomEvent('replay'));
     };
-    const btn = new UIbtn(posXbtn, posYbtn, this.btnLarge, 'Повторим?', this.layer, event);
+    const btn = new TextButton(posXbtn, posYbtn, this.btnLarge, 'Повторим?', this.layer, event, true);
     btn.render();
   }
 

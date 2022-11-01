@@ -59,12 +59,6 @@ class GameTable {
       }
     });
 
-    window.addEventListener('clearSpell', () => {
-      if (this.firstFigPort !== null) {
-        this.firstFigPort.clearTarget();
-      }
-    });
-
     window.addEventListener('clearBtnSpellbyNotType', () => {
       if (this.firstFigPort !== null) {
         this.firstFigPort.clearTarget();
@@ -73,6 +67,7 @@ class GameTable {
   }
 
   createGameTable() {
+    this.moveZone = Array(this.sizeTableX).fill(this.sizeTableY);
     const { gameLayer } = this.canvasLayers;
     drawSquareFill({
       x1: this.borderGapX,

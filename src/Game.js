@@ -21,7 +21,7 @@ class Game {
 
   createElements() {
     this.UI = new UI(this.canvasLayers, this.imgs);
-    this.GameTable = new GameTable(this.canvasLayers, this.imgs, this.UI);
+    this.GameTable = new GameTable(this.canvasLayers, this.imgs);
     this.Prise = new Prise(this.canvasLayers, this.imgs.dataPraise);
   }
 
@@ -37,13 +37,8 @@ class Game {
       const canvasHeight = canvas.height;
       const scaleX = Math.floor((displayWidth / canvasWidth) * 100) / 100;
       const scaleY = Math.floor((displayHeight / canvasHeight) * 100) / 100;
-      if (scaleX < scaleY) {
-        canvas.style.width = `${canvasWidth * scaleX}px`;
-        canvas.style.height = `${canvasHeight * scaleX}px`;
-      } else {
-        canvas.style.width = `${canvasWidth * scaleY}px`;
-        canvas.style.height = `${canvasHeight * scaleY}px`;
-      }
+      canvas.style.width = scaleX < scaleY ? `${canvasWidth * scaleX}px` : `${canvasWidth * scaleY}px`;
+      canvas.style.height = scaleX < scaleY ? `${canvasHeight * scaleX}px` : `${canvasHeight * scaleY}px`;
     });
     this.UI.renderUI();
     this.GameTable.createGameTable();
