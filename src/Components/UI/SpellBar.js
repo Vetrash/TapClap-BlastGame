@@ -2,45 +2,44 @@ import SpellButton from './Buttons/SpellButton.js';
 import TextBox from './TextBox.js';
 
 class SpellBar {
-  constructor(canvasLayers, imgs) {
-    this.canvasLayers = canvasLayers;
-    this.imgs = imgs;
-    this.amount = 3;
+  constructor(staticLayer, UILayer, imgs) {
+    this.staticLayer = staticLayer;
+    this.UILayer = UILayer;
+    this.imgsSpells = imgs;
     this.gapX = 50;
     this.gapYborder = 50;
-    this.gapTitle = 30;
-    this.prise = {
-      bomb: 15,
-      port: 3,
-      lightning: 10,
-    };
     this.fontSize = {
       norm: 83.4,
     };
-    this.arrSpell = ['bomb', 'port', 'lightning', 'killAll', 'killRow', 'killCol'];
-    this.spellBtns = [];
-    this.btnSpell = this.imgs.dataSpells.btnSpell;
-    this.borderGapX = (this.canvasLayers.UILayer.width
-      - ((this.btnSpell.width + this.gapX) * this.amount)) / 2;
+    this.btnSpell = this.imgsSpells.btnSpell;
+  }
+
+  createButtons() {
+    const useSpell = [
+      ['bomb', 15],
+      ['port', 3],
+      ['lightning', 10],
+    ];
+
+    this.borderGapX = (this.UILayer.width
+      - ((this.btnSpell.width + this.gapX) * useSpell.length)) / 2;
+    this.StartDrawY = this.staticLayer.height - this.btnSpell.height - this.gapYborder;
+    this.buttons = useSpell.map((spell, index) => {
+      const posX = this.borderGapX + (this.btnSpell.width + this.gapX) * index;
+      const posY = this.StartDrawY + this.gapYborder;
+      const imgSpell = this.imgsSpells[spell[0]];
+      const prise = spell[1];
+      const spellBtn = new SpellButton(posX, posY, this.UILayer,
+        this.staticLayer, this.btnSpell, imgSpell, spell[0], prise);
+      return spellBtn;
+    });
+
+    this.title = new TextBox('БОНУСЫ', this.staticLayer.width / 2, this.StartDrawY, this.staticLayer, this.fontSize.norm);
   }
 
   render() {
-    const { UILayer, staticLayer } = this.canvasLayers;
-    const StartDrawY = staticLayer.height - this.imgs.dataSpells.btnSpell.height - this.gapYborder;
-
-    const title = new TextBox('БОНУСЫ', staticLayer.width / 2, StartDrawY, staticLayer, this.fontSize.norm);
-    title.render();
-
-    for (let i = 0; i < this.amount; i += 1) {
-      const nameSpell = this.arrSpell[i];
-      const posX = this.borderGapX + (this.btnSpell.width + this.gapX) * i;
-      const posY = StartDrawY + this.gapYborder;
-      const imgSpell = this.imgs.dataSpells[nameSpell];
-      const prise = this.prise[nameSpell];
-      const spellBtn = new SpellButton(posX, posY, UILayer,
-        staticLayer, this.btnSpell, imgSpell, nameSpell, prise);
-      spellBtn.renderSpellBtn();
-    }
+    this.title.render();
+    this.buttons.forEach((btn) => btn.render());
   }
 }
 export default SpellBar;

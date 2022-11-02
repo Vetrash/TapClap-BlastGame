@@ -12,7 +12,6 @@ class Game {
     });
     this.imgs = [];
     window.addEventListener('replay', () => {
-      this.UI.loadStartValue();
       this.startNewGame();
     });
   }
@@ -21,6 +20,7 @@ class Game {
 
   createElements() {
     this.UI = new UI(this.canvasLayers, this.imgs);
+    this.UI.createElements();
     this.GameTable = new GameTable(this.canvasLayers, this.imgs);
     this.Prise = new Prise(this.canvasLayers, this.imgs.dataPraise);
   }
@@ -40,8 +40,9 @@ class Game {
       canvas.style.width = scaleX < scaleY ? `${canvasWidth * scaleX}px` : `${canvasWidth * scaleY}px`;
       canvas.style.height = scaleX < scaleY ? `${canvasHeight * scaleX}px` : `${canvasHeight * scaleY}px`;
     });
-    this.UI.renderUI();
     this.GameTable.createGameTable();
+    this.UI.loadStartValue();
+    this.UI.renderUI();
     this.GameTable.renderPartGameTable();
   }
 }

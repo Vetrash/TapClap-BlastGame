@@ -38,7 +38,7 @@ class EndGamePage {
     const posYbtn = textPosY + this.offsetBtn;
 
     const event = () => {
-      window.dispatchEvent(new CustomEvent('onHandlers'));
+      window.dispatchEvent(new CustomEvent('swithHandlers', { detail: { value: false } }));
       window.dispatchEvent(new CustomEvent('replay'));
     };
     const btn = new TextButton(posXbtn, posYbtn, this.btnLarge, 'Повторим?', this.layer, event, true);
@@ -52,7 +52,7 @@ class EndGamePage {
     const posX = (this.layer.width / 2) - (titleimg.width / 2);
     const posY = (this.layer.height / 2) - (this.baseImg.height / 2) - titleimg.height;
     ctx.drawImage(titleimg, posX, posY);
-    window.dispatchEvent(new CustomEvent('offHandlers'));
+    window.dispatchEvent(new CustomEvent('swithHandlers', { detail: { value: true } }));
   }
 }
 export default EndGamePage;

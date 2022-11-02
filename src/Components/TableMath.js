@@ -45,14 +45,13 @@ class TableMath {
     return ({ col: collumnIndex, row: rowIndex });
   }
 
-  getChain(table, col, row, typeStart = undefined) {
+  getChainFig(table, col, row, typeStart = undefined) {
     if (col === -1 || row === -1) { return { chain: [], moveZone: [] }; }
     const sizeTableX = table.length;
     const sizeTableY = table[0].length;
     if (typeStart === undefined) {
       this.watchTable = Array(sizeTableX).fill(0)
         .map(() => Array(sizeTableY).fill(0));
-      this.moveZone = Array(sizeTableX).fill(sizeTableY);
       this.chainArr.length = 0;
     }
     const CheckTypes = typeStart === undefined ? table[col][row].type : typeStart;
@@ -60,7 +59,6 @@ class TableMath {
       this.chainArr.push({ col, row });
       this.watchTable[col][row] = 'x';
     }
-    if (this.moveZone[col] > row) { this.moveZone[col] = row; }
     const nearby = [];
     this.mFindNearby.forEach((e) => {
       if (row + e.upRow < sizeTableY && col + e.upCol < sizeTableX
@@ -68,17 +66,16 @@ class TableMath {
         if (this.watchTable[col + e.upCol][row + e.upRow] === 0) {
           nearby.push({ col: col + e.upCol, row: row + e.upRow });
           this.watchTable[col + e.upCol][row + e.upRow] = 1;
-          if (this.moveZone[col] > row) { this.moveZone[col] = row; }
         }
       }
     });
     nearby.forEach((elem) => {
       const typeElem = table[elem.col][elem.row].type;
       if (CheckTypes === typeElem) {
-        this.getChain(table, elem.col, elem.row, CheckTypes);
+        this.getChainFig(table, elem.col, elem.row, CheckTypes);
       }
     });
-    return { chain: this.chainArr, moveZone: this.moveZone };
+    return { chain: this.chainArr, isBySpell: false, prise: 0, type: 'basic' };
   }
 
   createNewFigures(table, chainArr) {
@@ -103,29 +100,23 @@ class TableMath {
     return cloneTable;
   }
 
-  fulingFigures(table, dt) {
-    const cloneTable = _.cloneDeep(table);
-    let sumStopedFigures = 0;
-    for (let k = 0; k < this.sizeTableY; k += 1) {
-      const stopCorY = this.startPosY - k * (this.heightFig + this.gapY) - this.heightFig;
-      for (let i = 0; i < this.sizeTableX; i += 1) {
-        if (this.moveZone[i] !== this.sizeTableY) {
-          const newCor = cloneTable[i][k].corY + (dt * this.speedFuling);
-          if (newCor < stopCorY) {
-            cloneTable[i][k].corY = newCor;
-          } else {
-            cloneTable[i][k].corY = stopCorY;
-            sumStopedFigures += 1;
-          }
-        } else {
-          sumStopedFigures += 1;
-        }
+  fulingFigures(table, dt, gapY, endDraw, fulingCol) {
+    const cloneTable = table;
+    const sizeTableY = table[0].length;
+    const sizeTableX = table.length;
+    const sumFig = sizeTableX * sizeTableY;
+    let sumStopedFigures = sumFig - (fulingCol.length * sizeTableY);
+    const heightFig = table[0][0].img.height;
+    const speedFuling = 500;
+    for (let k = 0; k < sizeTableY; k += 1) {
+      const stopCorY = endDraw - k * (heightFig + gapY) - heightFig;
+      for (let i = 0; i < fulingCol.length; i += 1) {
+        const newCor = cloneTable[fulingCol[i]][k].corY + (dt * speedFuling);
+        cloneTable[fulingCol[i]][k].corY = newCor < stopCorY ? newCor : stopCorY;
+        sumStopedFigures = newCor < stopCorY ? sumStopedFigures : sumStopedFigures + 1;
       }
     }
-    if (sumStopedFigures === this.sizeTableX * this.sizeTableY) {
-      return { table: cloneTable, isStoped: false };
-    }
-    return { table: cloneTable, isStoped: true };
+    return sumStopedFigures !== sumFig;
   }
 
   getMoveZoneByChain(table, chain) {
@@ -164,11 +155,29 @@ class TableMath {
 
     for (let collumnIndex = 0; collumnIndex < sizefigureX; collumnIndex += 1) {
       for (let rowIndex = 0; rowIndex < sizefigureY; rowIndex += 1) {
-        const { chain } = this.getChain(table, collumnIndex, rowIndex);
+        const { chain } = this.getChainFig(table, collumnIndex, rowIndex);
         if (chain.length >= minLength) { return true; }
       }
     }
     return false;
+  }
+
+  getChain(SpellManager, table, corTable) {
+    const { isSpellRight } = SpellManager;
+    const nameFig = table[corTable.col][corTable.row].type;
+    const isSpellFig = SpellManager.isSpellName(nameFig);
+
+    if (isSpellRight || isSpellFig) {
+      return this.getChainSpell(corTable, isSpellFig, nameFig, SpellManager, table);
+    }
+    return this.getChainFig(table, corTable.col, corTable.row);
+  }
+
+  getChainSpell(corTable, isSpellOfTable, spellName, SpellManager) {
+    if (isSpellOfTable) { SpellManager.setActivSpell(spellName); }
+    const { chain, prise, type } = SpellManager.getSpell(corTable);
+    const useSpellPrise = !isSpellOfTable ? prise : 0;
+    return { chain, isBySpell: true, prise: useSpellPrise, type };
   }
 }
 export default TableMath;
