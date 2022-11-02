@@ -9,8 +9,8 @@ class GameTable {
     this.table = [];
     this.gapX = 2;
     this.gapY = -20;
-    this.sizeTableX = 6;
-    this.sizeTableY = 6;
+    this.sizeTableX = 8;
+    this.sizeTableY = 8;
     this.chainMinLigth = 2;
     this.minLigthToSupBlock = 7;
     this.SpellManager = new SpellManager(this.sizeTableX, this.sizeTableY);
@@ -154,6 +154,7 @@ class GameTable {
   }
 
   shuflle(sumShuffle = 0) {
+    clearTimeout(this.timerId);
     const maxShuffle = 2;
     const isShaffling = !this.TableMath.checkForMove(this.table, this.chainMinLigth);
     if (!isShaffling) { return; }
@@ -167,7 +168,7 @@ class GameTable {
       window.dispatchEvent(new CustomEvent('endGame'));
       return;
     }
-    setTimeout(() => { this.shuflle(sumShuffle + 1); }, 3000);
+    this.timerId = setTimeout(() => { this.shuflle(sumShuffle + 1); }, 3000);
   }
 
   animFulingFig() {
@@ -184,7 +185,7 @@ class GameTable {
         requestAnimationFrame(loop);
       } else {
         window.cancelAnimationFrame(loop);
-        this.shuflle();
+        this.timerId = setTimeout(() => { this.shuflle(); }, 3000);
       }
       this.renderPartGameTable();
     };

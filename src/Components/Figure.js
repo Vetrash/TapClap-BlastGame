@@ -18,19 +18,18 @@ class Figure {
     const canvas = this.canvasLayers.effectLayer;
     const ctx = canvas.getContext('2d');
     let numFrame = 0;
-    let start = 0;
+    let lastTime = Date.now();
     const frameDelay = 60;
     const frizX = this.corX;
     const frizY = this.corY;
-    const loop = (timestamp) => {
-      if (start === 0) { start = timestamp; }
-      const stepTime = timestamp - start;
-      if (stepTime >= frameDelay * numFrame) {
+    const loop = () => {
+      const now = Date.now();
+      const stepTime = (now - lastTime);
+      if (stepTime >= frameDelay) {
         ctx.clearRect(frizX, frizY, this.img.width, this.img.height);
-        if (numFrame < this.puffImgs.length) {
-          ctx.drawImage(this.puffImgs[numFrame].offCanvas, frizX, frizY);
-          numFrame += 1;
-        }
+        ctx.drawImage(this.puffImgs[numFrame].offCanvas, frizX, frizY);
+        numFrame += 1;
+        lastTime = now;
       }
       if (numFrame >= this.puffImgs.length) {
         ctx.clearRect(frizX, frizY, this.widthClear, this.heightClear);

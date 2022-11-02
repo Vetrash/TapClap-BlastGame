@@ -1,4 +1,4 @@
-class Prise {
+class Praise {
   constructor(canvasLayers, priseImg) {
     this.praiseLayer = canvasLayers.praiseLayer;
     this.ctx = canvasLayers.praiseLayer.getContext('2d');
@@ -8,7 +8,9 @@ class Prise {
     this.priseWidth = 600;
     this.priseHeight = 600;
     window.addEventListener('chainDelet', (e) => {
-      this.renderPraise(e.detail.value);
+      if (e.detail.value >= 3) {
+        this.renderPraise(e.detail.value);
+      }
     });
   }
 
@@ -26,29 +28,17 @@ class Prise {
     * (this.praiseLayer.height - 2 * this.priseHeight)) + this.priseHeight;
     this.corLastPraise.x = corX;
     this.corLastPraise.y = corY;
-    if (combo >= 3) {
-      switch (combo) {
-        case 3:
-          this.ctx.drawImage(this.priseImg.great.offCanvas, corX, corY);
-          break;
-        case 4:
-          this.ctx.drawImage(this.priseImg.cool.offCanvas, corX, corY);
-          break;
-        case 5:
-          this.ctx.drawImage(this.priseImg.wellDone.offCanvas, corX, corY);
-          break;
-        case 6:
-          this.ctx.drawImage(this.priseImg.ohYes.offCanvas, corX, corY);
-          break;
-        case 7:
-          this.ctx.drawImage(this.priseImg.awesome.offCanvas, corX, corY);
-          break;
-        default:
-          this.ctx.drawImage(this.priseImg.awesome.offCanvas, corX, corY);
-          break;
-      }
-      this.timerId = setTimeout(() => this.clear(), 1000);
-    }
+    const comboFilt = combo > 7 ? 7 : combo;
+    const interpritator = {
+      3: 'great',
+      4: 'cool',
+      5: 'wellDone',
+      6: 'ohYes',
+      7: 'awesome',
+    };
+    const nameImg = interpritator[comboFilt];
+    this.ctx.drawImage(this.priseImg[nameImg].offCanvas, corX, corY);
+    this.timerId = setTimeout(() => this.clear(), 1000);
   }
 }
-export default Prise;
+export default Praise;

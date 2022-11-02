@@ -111,19 +111,22 @@ class TableMath {
   }
 
   fulingFigures(table, dt, gapY, endDraw, fulingCol) {
-    const cloneTable = table;
     const sizeTableY = table[0].length;
     const sizeTableX = table.length;
     const sumFig = sizeTableX * sizeTableY;
     let sumStopedFigures = sumFig - (fulingCol.length * sizeTableY);
     const heightFig = table[0][0].img.height;
     const speedFuling = 500;
-    for (let k = 0; k < sizeTableY; k += 1) {
-      const stopCorY = endDraw - k * (heightFig + gapY) - heightFig;
-      for (let i = 0; i < fulingCol.length; i += 1) {
-        const newCor = cloneTable[fulingCol[i]][k].corY + (dt * speedFuling);
-        cloneTable[fulingCol[i]][k].corY = newCor < stopCorY ? newCor : stopCorY;
-        sumStopedFigures = newCor < stopCorY ? sumStopedFigures : sumStopedFigures + 1;
+    for (let row = 0; row < sizeTableY; row += 1) {
+      const stopCorY = endDraw - row * (heightFig + gapY) - heightFig;
+      for (const col of fulingCol) {
+        const newCor = table[col][row].corY + (dt * speedFuling);
+        if (newCor < stopCorY) {
+          table[col][row].corY = newCor;
+          continue;
+        }
+        table[col][row].corY = stopCorY;
+        sumStopedFigures += 1;
       }
     }
     return sumStopedFigures !== sumFig;
@@ -158,14 +161,14 @@ class TableMath {
   checkForMove(table, minLength) {
     const sizefigureX = table.length;
     const sizefigureY = table[0].length;
-    const fig = _.cloneDeep(table).flat();
-    const typeFig = _.map(fig, 'type');
+    const figFlat = table.flat();
+    const typeFig = _.map(figFlat, 'type');
     const intersection = _.intersection(typeFig, this.supBlocks);
-    if (intersection.length !== 0) return true;
+    if (intersection.length !== 0) { return true; }
 
-    for (let collumnIndex = 0; collumnIndex < sizefigureX; collumnIndex += 1) {
-      for (let rowIndex = 0; rowIndex < sizefigureY; rowIndex += 1) {
-        const { chain } = this.getChainFig(table, collumnIndex, rowIndex);
+    for (let col = 0; col < sizefigureX; col += minLength) {
+      for (let row = 0; row < sizefigureY; row += minLength) {
+        const { chain } = this.getChainFig(table, col, row);
         if (chain.length >= minLength) { return true; }
       }
     }

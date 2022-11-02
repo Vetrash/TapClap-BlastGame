@@ -13,16 +13,6 @@ class SpellManager {
       port: 3,
       lightning: 10,
     };
-    this.watchOffsetBomb = [
-      { colOffset: -1, rowOffset: 0 },
-      { colOffset: -1, rowOffset: 1 },
-      { colOffset: -1, rowOffset: -1 },
-      { colOffset: 1, rowOffset: 0 },
-      { colOffset: 1, rowOffset: 1 },
-      { colOffset: 1, rowOffset: -1 },
-      { colOffset: 0, rowOffset: -1 },
-      { colOffset: 0, rowOffset: 1 },
-    ];
     window.addEventListener('activSpell', (e) => {
       this.setActivSpell(e.detail.value);
       this.arrClick.length = 0;
@@ -62,9 +52,19 @@ class SpellManager {
   }
 
   bomb(loc) {
+    const watchOffsetBomb = [
+      { colOffset: -1, rowOffset: 0 },
+      { colOffset: -1, rowOffset: 1 },
+      { colOffset: -1, rowOffset: -1 },
+      { colOffset: 1, rowOffset: 0 },
+      { colOffset: 1, rowOffset: 1 },
+      { colOffset: 1, rowOffset: -1 },
+      { colOffset: 0, rowOffset: -1 },
+      { colOffset: 0, rowOffset: 1 },
+    ];
     const chain = [];
     chain.push({ col: loc.col, row: loc.row });
-    this.watchOffsetBomb.forEach((elem) => {
+    watchOffsetBomb.forEach((elem) => {
       const findeCellRow = loc.row + elem.rowOffset;
       const findeCellCol = loc.col + elem.colOffset;
       if (findeCellRow < this.sizeTableY && findeCellRow >= 0

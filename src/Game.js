@@ -1,6 +1,6 @@
 import UI from './Components/UI/UI.js';
 import GameTable from './Components/GameTable.js';
-import Prise from './Components/Praise.js';
+import Praise from './Components/Praise.js';
 
 class Game {
   constructor() {
@@ -22,7 +22,7 @@ class Game {
     this.UI = new UI(this.canvasLayers, this.imgs);
     this.UI.createElements();
     this.GameTable = new GameTable(this.canvasLayers, this.imgs);
-    this.Prise = new Prise(this.canvasLayers, this.imgs.dataPraise);
+    this.Prise = new Praise(this.canvasLayers, this.imgs.dataPraise);
   }
 
   startNewGame() {
