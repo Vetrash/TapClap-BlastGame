@@ -9,12 +9,10 @@ class GameTable {
     this.table = [];
     this.gapX = 2;
     this.gapY = -20;
-    this.sizeTableX = 8;
-    this.sizeTableY = 8;
+    this.sizeTableX = 6;
+    this.sizeTableY = 6;
     this.chainMinLigth = 2;
     this.minLigthToSupBlock = 7;
-    this.maxShuffle = 2;
-    this.sumShuffle = 0;
     this.SpellManager = new SpellManager(this.sizeTableX, this.sizeTableY);
     this.canvasLayers = canvasLayers;
     this.imgs = imgs;
@@ -27,9 +25,7 @@ class GameTable {
       - ((this.heightFig + this.gapY) * this.sizeTableY)) / 2;
     this.endDraw = this.startDrawY + this.sizeTableY * (this.heightFig + this.gapY);
     this.chainArr = [];
-    this.isShaffling = false;
     this.moveZone = Array(this.sizeTableX).fill(this.sizeTableY);
-    this.lastLengthCombo = 0;
     this.isFuling = false;
     this.firstFigPort = null;
     this.isHanderStop = false;
@@ -41,8 +37,10 @@ class GameTable {
     window.addEventListener('click', (e) => {
       if (!this.isFuling) {
         const loc = window.toCanvasCor(this.canvasLayers.gameLayer, e.clientX, e.clientY);
-        this.shuflle();
-        if (!this.isShaffling) { this.handler(loc); }
+        const corTable = this.TableMath.locToCorTable(this.table, loc);
+        if (corTable.col !== -1 && corTable.row !== -1 && !this.isHanderStop) {
+          this.handler(corTable);
+        }
       }
     });
 
@@ -106,21 +104,10 @@ class GameTable {
       radius: radiusClip,
       canvas: gameLayer,
     });
-    ///
-    let startRenderCol = 0;
-    let endRenderCol = this.sizeTableX - 1;
-    const indexWatch = [];
-    this.moveZone.forEach((elem, index) => {
-      if (elem !== this.sizeTableY) { indexWatch.push(index); }
-    });
-    if (indexWatch.length !== 0) {
-      // eslint-disable-next-line prefer-destructuring
-      startRenderCol = indexWatch[0];
-      endRenderCol = _.last(indexWatch);
-    }
+    const { startRenderCol, endRenderCol } = this.TableMath.getRenderCol(this.moveZone,
+      this.sizeTableY);
     const corStartClear = this.borderGapX + startRenderCol * (this.widthFig + this.gapX);
     const corEndClear = (endRenderCol - startRenderCol + 1) * (this.widthFig + this.gapX);
-    ///
     gameTableCtx.clearRect(corStartClear, this.startDrawY, corEndClear,
       this.endDraw - (this.heightFig * 2));
     for (let col = startRenderCol; col <= endRenderCol; col += 1) {
@@ -166,28 +153,21 @@ class GameTable {
     });
   }
 
-  shuflle() {
-    this.isShaffling = !this.TableMath.checkForMove(this.table, 2);
-    const loop = () => {
-      this.table = this.TableMath.shuffle(this.table);
-      this.table.forEach((col) => {
-        col.forEach((fig) => { fig.puffAnimate(); });
-      });
-      this.moveZone = Array(this.sizeTableX).fill(this.sizeTableY);
-      this.renderPartGameTable();
-      this.sumShuffle += 1;
-      if (this.sumShuffle > this.maxShuffle) {
-        window.dispatchEvent(new CustomEvent('endGame'));
-        return;
-      }
-      const reShaffle = !this.TableMath.checkForMove(this.table, 2);
-      if (reShaffle) {
-        setTimeout(loop, 3000);
-      } else {
-        this.sumShuffle = 0;
-      }
-    };
-    if (this.isShaffling) { loop(); }
+  shuflle(sumShuffle = 0) {
+    const maxShuffle = 2;
+    const isShaffling = !this.TableMath.checkForMove(this.table, this.chainMinLigth);
+    if (!isShaffling) { return; }
+    this.table = this.TableMath.shuffle(this.table);
+    this.table.forEach((col) => {
+      col.forEach((fig) => { fig.puffAnimate(); });
+    });
+    this.moveZone = Array(this.sizeTableX).fill(this.sizeTableY);
+    this.renderPartGameTable();
+    if (sumShuffle >= maxShuffle) {
+      window.dispatchEvent(new CustomEvent('endGame'));
+      return;
+    }
+    setTimeout(() => { this.shuflle(sumShuffle + 1); }, 3000);
   }
 
   animFulingFig() {
@@ -204,6 +184,7 @@ class GameTable {
         requestAnimationFrame(loop);
       } else {
         window.cancelAnimationFrame(loop);
+        this.shuflle();
       }
       this.renderPartGameTable();
     };
@@ -211,7 +192,6 @@ class GameTable {
   }
 
   port(chain) {
-    console.log(_.cloneDeep(chain));
     if (chain.length < 2) {
       const firstFigPort = this.table[chain[0].col][chain[0].row];
       firstFigPort.renderTarget();
@@ -229,31 +209,28 @@ class GameTable {
     }
   }
 
-  handler(loc) {
-    const corTable = this.TableMath.locToCorTable(this.table, loc);
-    if (corTable.col !== -1 && corTable.row !== -1 && !this.isHanderStop) {
-      const { chain, isBySpell, prise, type } = this.TableMath.getChain(this.SpellManager,
-        this.table, corTable);
-      this.chainArr = chain;
-      if (type === 'port') {
-        this.port(chain);
-        this.chainArr = [];
-      }
-      this.moveZone = this.TableMath.getMoveZoneByChain(this.table, chain);
-      window.dispatchEvent(new CustomEvent('coinUpdate', { detail: { value: -prise } }));
-      if (!isBySpell && this.chainArr.length >= this.minLigthToSupBlock) {
-        const firstFigLoc = this.chainArr.shift();
-        const firstFig = this.table[firstFigLoc.col][firstFigLoc.row];
-        firstFig.changeTypetoSpecial();
-        firstFig.puffAnimate();
-      }
-      if (this.chainArr.length >= this.chainMinLigth) {
-        this.clearBrokenFigures();
-        this.createNewFigures();
-        this.animFulingFig();
-        window.dispatchEvent(new CustomEvent('clickUpdate', { detail: { value: -1 } }));
-        window.dispatchEvent(new CustomEvent('chainDelet', { detail: { value: chain.length } }));
-      }
+  handler(corTable) {
+    const { chain, isBySpell, prise, type } = this.TableMath.getChain(this.SpellManager,
+      this.table, corTable);
+    this.chainArr = chain;
+    if (type === 'port') {
+      this.port(chain);
+      this.chainArr = [];
+    }
+    this.moveZone = this.TableMath.getMoveZoneByChain(this.table, chain);
+    window.dispatchEvent(new CustomEvent('coinUpdate', { detail: { value: -prise } }));
+    if (!isBySpell && this.chainArr.length >= this.minLigthToSupBlock) {
+      const firstFigLoc = this.chainArr.shift();
+      const firstFig = this.table[firstFigLoc.col][firstFigLoc.row];
+      firstFig.changeTypetoSpecial();
+      firstFig.puffAnimate();
+    }
+    if (this.chainArr.length >= this.chainMinLigth) {
+      this.clearBrokenFigures();
+      this.createNewFigures();
+      this.animFulingFig();
+      window.dispatchEvent(new CustomEvent('clickUpdate', { detail: { value: -1 } }));
+      window.dispatchEvent(new CustomEvent('chainDelet', { detail: { value: chain.length } }));
     }
   }
 }

@@ -100,6 +100,16 @@ class TableMath {
     return cloneTable;
   }
 
+  getRenderCol(moveZone, sizeTableY) {
+    let fulingCol = moveZone.map((e, i) =>  { return e !== sizeTableY ? i : 'X'; })
+      .filter((elem) => elem !== 'X');
+
+    if (fulingCol.length === 0) { fulingCol = [0, moveZone.length - 1]; }
+    const startRenderCol = _.first(fulingCol);
+    const endRenderCol = _.last(fulingCol);
+    return { startRenderCol, endRenderCol };
+  }
+
   fulingFigures(table, dt, gapY, endDraw, fulingCol) {
     const cloneTable = table;
     const sizeTableY = table[0].length;
