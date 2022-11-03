@@ -14,6 +14,12 @@ class Figure {
     this.targetOffsetY = 15;
   }
 
+  updateFigure(corY, img, type) {
+    this.corY = corY;
+    this.img = img;
+    this.type = type;
+  }
+
   puffAnimate() {
     const canvas = this.canvasLayers.effectLayer;
     const ctx = canvas.getContext('2d');
@@ -33,7 +39,7 @@ class Figure {
       }
       if (numFrame >= this.puffImgs.length) {
         ctx.clearRect(frizX, frizY, this.widthClear, this.heightClear);
-        window.cancelAnimationFrame(loop);
+        cancelAnimationFrame(loop);
       } else {
         requestAnimationFrame(loop);
       }

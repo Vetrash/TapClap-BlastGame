@@ -14,6 +14,10 @@ class Game {
     window.addEventListener('replay', () => {
       this.startNewGame();
     });
+    window.addEventListener('click', (e) => {
+      const corCanvas = window.toCanvasCor(this.canvasLayers.gameLayer, e.clientX, e.clientY);
+      window.dispatchEvent(new CustomEvent('clickCanvas', { detail: { value: corCanvas } }));
+    });
   }
 
   saveImg(imgs) { this.imgs = imgs; }

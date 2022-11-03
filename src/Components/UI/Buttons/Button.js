@@ -7,9 +7,9 @@ class Button {
     this.isActiv = false;
     this.event = event;
     this.isSwithOff = false;
-    window.addEventListener('click', (e) => {
+    window.addEventListener('clickCanvas', (e) => {
       if (this.isActiv) {
-        const corCanvas = window.toCanvasCor(this.layer, e.clientX, e.clientY);
+        const corCanvas = e.detail.value;
         if (corCanvas.x > this.posX && corCanvas.x < this.posX + this.btnImg.width
             && corCanvas.y > this.posY && corCanvas.y < this.posY + this.btnImg.height) {
           this.clickEvent();

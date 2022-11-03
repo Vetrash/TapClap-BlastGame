@@ -34,10 +34,9 @@ class GameTable {
       this.isHanderStop = e.detail.value;
     });
 
-    window.addEventListener('click', (e) => {
+    window.addEventListener('clickCanvas', (e) => {
       if (!this.isFuling) {
-        const loc = window.toCanvasCor(this.canvasLayers.gameLayer, e.clientX, e.clientY);
-        const corTable = this.TableMath.locToCorTable(this.table, loc);
+        const corTable = this.TableMath.locToCorTable(this.table, e.detail.value);
         if (corTable.col !== -1 && corTable.row !== -1 && !this.isHanderStop) {
           this.handler(corTable);
         }
@@ -76,6 +75,15 @@ class GameTable {
       canvas: this.canvasLayers.staticLayerUp,
       lWidth: borderWidth,
     });
+    const radiusClip = 30;
+    drawSquareClip({
+      x1: this.borderGapX,
+      x2: gameLayer.width - this.borderGapX,
+      y1: this.startDrawY,
+      y2: this.endDraw,
+      radius: radiusClip,
+      canvas: gameLayer,
+    });
     const newTable = [];
     for (let row = 0; row < this.sizeTableX; row += 1) {
       const collumnFigures = [];
@@ -95,15 +103,6 @@ class GameTable {
   renderPartGameTable() {
     const { gameLayer } = this.canvasLayers;
     const gameTableCtx = gameLayer.getContext('2d');
-    const radiusClip = 30;
-    drawSquareClip({
-      x1: this.borderGapX,
-      x2: gameLayer.width - this.borderGapX,
-      y1: this.startDrawY,
-      y2: this.endDraw,
-      radius: radiusClip,
-      canvas: gameLayer,
-    });
     const { startRenderCol, endRenderCol } = this.TableMath.getRenderCol(this.moveZone,
       this.sizeTableY);
     const corStartClear = this.borderGapX + startRenderCol * (this.widthFig + this.gapX);
@@ -117,39 +116,28 @@ class GameTable {
     }
   }
 
-  clearBrokenFigures() {
-    const filterFigure = [];
-    this.table.forEach((collumn, col) => {
+  shiftBrokenFigures() {
+    const filterFigure = this.table.map((collumn, col) => {
       if (this.moveZone[col] === this.sizeTableY) {
-        filterFigure.push(collumn);
-      } else {
-        const filterCol = collumn.filter((elem, row) => !_.some(this.chainArr, { col, row }));
-        filterFigure.push(filterCol);
+        return collumn;
       }
+      return collumn.filter((elem, row) => !_.some(this.chainArr, { col, row }));
     });
-    this.chainArr.forEach((e) => {
+    const countAddet = Array(this.sizeTableX).fill(0);
+    const shiftFigures = this.chainArr.map((e) => {
+      countAddet[e.col] += 1;
+      const indexShift = countAddet[e.col];
+      const indexType = Math.floor(Math.random() * this.imgs.dataFigures.length);
+      const corY = (this.startDrawY + this.gapY - indexShift * (this.heightFig + this.gapY));
+      const img = this.imgs.dataFigures[indexType].offCanvas;
+      const type = this.imgs.dataFigures[indexType].name;
       this.table[e.col][e.row].puffAnimate();
+      this.table[e.col][e.row].updateFigure(corY, img, type);
+      return { col: e.col, fig: this.table[e.col][e.row] };
     });
     this.table = filterFigure;
-  }
-
-  createNewFigures() {
-    const countAddet = Array(this.sizeTableX).fill(0);
-    this.chainArr.forEach((elem) => {
-      countAddet[elem.col] += 1;
-    });
-
-    countAddet.forEach((elem, index) => {
-      if (elem !== 0) {
-        const corX = this.borderGapX + index * (this.widthFig + this.gapX);
-        for (let i = 1; i <= elem; i += 1) {
-          const indexType = Math.floor(Math.random() * this.imgs.dataFigures.length);
-          const img = this.imgs.dataFigures[indexType].offCanvas;
-          const type = this.imgs.dataFigures[indexType].name;
-          const corY = (this.startDrawY + this.gapY - i * (this.heightFig + this.gapY));
-          this.table[index].push(new Figure(corY, corX, img, type, this.imgs, this.canvasLayers));
-        }
-      }
+    shiftFigures.forEach((elem) => {
+      this.table[elem.col].push(elem.fig);
     });
   }
 
@@ -227,8 +215,7 @@ class GameTable {
       firstFig.puffAnimate();
     }
     if (this.chainArr.length >= this.chainMinLigth) {
-      this.clearBrokenFigures();
-      this.createNewFigures();
+      this.shiftBrokenFigures();
       this.animFulingFig();
       window.dispatchEvent(new CustomEvent('clickUpdate', { detail: { value: -1 } }));
       window.dispatchEvent(new CustomEvent('chainDelet', { detail: { value: chain.length } }));

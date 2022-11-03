@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/8c213d5a42a506330f61/maintainability)](https://codeclimate.com/github/Vetrash/TapClap-BlastGame/maintainability)
+
 ## Описание
 <p>Прототип игры в жанре “головоломка с механикой Blast”. Поиграть можно <a href="https://tapclap-blastgame-vetrash.vercel.app/">тут</a> или <a href="https://tapclap-blastgame-git-main-vetrash.vercel.app/">тут</a>.</p>
 
@@ -33,9 +35,5 @@ npm run serve
 | <img src="src/assets/images/killAll.png" width="40" height="40"/>   | Уничтожает все поле. Очков начисляется не по стандартной формуле. |
 | <img src="src/assets/images/killRow.png" width="40" height="40"/>   | Уничтожает строку в которой активировано. |
 | <img src="src/assets/images/killCol.png" width="40" height="40"/>   | Уничтожает столбец в котором активировано. |
-
-## Настройки
-
-<p>В файле <a href="src/settings.js"> настроек</a> можно задать большинство переменных. Для простоты оставил комментарии для каждой переменной. Таким образом возможно настроить игру под свои нужды. В дальнейшем планируются добавить звуки и анимации, а также конструктор сложных игровых полей с нестандартной формой. </p>
 
 
