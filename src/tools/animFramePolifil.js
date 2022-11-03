@@ -1,15 +1,18 @@
-const animFramePolifil = () => {
-  window.requestAnimFrame = (() => window.requestAnimationFrame
-    || window.webkitRequestAnimationFrame
-    || window.mozRequestAnimationFrame
-    || window.oRequestAnimationFrame
-    || window.msRequestAnimationFrame
-    || function (callback) {
-      window.setTimeout(callback, 1000 / 60);
-    }
-  )();
+class AnimFramePolifil {
+  static addRequest() {
+    window.requestAnimFrame = (() => window.requestAnimationFrame
+      || window.webkitRequestAnimationFrame
+      || window.mozRequestAnimationFrame
+      || window.oRequestAnimationFrame
+      || window.msRequestAnimationFrame
+      || function (callback) {
+        window.setTimeout(callback, 1000 / 60);
+      }
+    )();
+  }
 
-  window.cancelAnimationFrame = (() => window.cancelAnimationFrame
+  static addCancel() {
+    window.cancelAnimationFrame = (() => window.cancelAnimationFrame
     || window.msCancelAnimationFrame
     || window.mozCancelAnimationFrame
     || window.webkitCancelAnimationFrame
@@ -19,7 +22,7 @@ const animFramePolifil = () => {
     || window.webkitCancelRequestAnimationFrame
     || window.oCancelRequestAnimationFrame
     || function (id) { clearTimeout(id); }
-  )();
-};
-
-export default animFramePolifil;
+    )();
+  }
+}
+export default AnimFramePolifil;

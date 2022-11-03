@@ -1,19 +1,15 @@
-import TextBox from '../TextBox.js';
+import TextBox from '../TextBoxs/TextBox.js';
 import Button from './Button.js';
 
 class TextButton extends Button {
-  constructor(posX, posY, btnImg, text, layer, event, isSwithOff) {
+  constructor(posX, posY, btnImg, text, layer, event, isSwithOff, fontSize) {
     super();
     super.layer = layer;
     super.btnImg = btnImg;
     super.posX = posX;
     super.posY = posY;
     this.isSwithOff = isSwithOff;
-    this.fontSize = {
-      norm: 83.4,
-      big: 140,
-      large: 231,
-    };
+    this.fontSize = fontSize;
     this.isVisible = false;
     this.event = event;
     this.TextBox = new TextBox(text, this.posX + this.btnImg.width / 2,

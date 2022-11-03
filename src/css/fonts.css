@@ -1,18 +1,16 @@
-    @font-face {
-        font-family: 'Marvin';
-        src: url('../assets/fonts/Marvin.eot');
-        src: local('Marvin'),
-            url('../assets/fonts/Marvin.eot?#iefix') format('embedded-opentype'),
-            url('../assets/fonts/Marvin.woff2') format('woff2'),
-            url('../assets/fonts/Marvin.woff') format('woff'),
-            url('../assets/fonts/Marvin.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+@font-face {
+  font-family: 'Marvin';
+  src: url('../assets/fonts/Marvin.eot');
+  src: local('Marvin'),
+  url('../assets/fonts/Marvin.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/Marvin.woff2') format('woff2'),
+  url('../assets/fonts/Marvin.woff') format('woff'),
+  url('../assets/fonts/Marvin.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-
-
-p{
-    font-family: 'Marvin';
-    color: #fff
+p {
+  font-family: 'Marvin';
+  color: #fff
 }

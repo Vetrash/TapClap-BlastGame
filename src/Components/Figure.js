@@ -16,8 +16,7 @@ class Figure {
 
   updateFigure(corY, img, type) {
     this.corY = corY;
-    this.img = img;
-    this.type = type;
+    this.changeType(img, type);
   }
 
   puffAnimate() {

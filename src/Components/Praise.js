@@ -7,8 +7,10 @@ class Praise {
     this.priseImg = priseImg;
     this.priseWidth = 600;
     this.priseHeight = 600;
+    this.minLengthPraise = 3;
+    this.maxLengthPraise = 7;
     window.addEventListener('chainDelet', (e) => {
-      if (e.detail.value >= 3) {
+      if (e.detail.value >= this.minLengthPraise) {
         this.renderPraise(e.detail.value);
       }
     });
@@ -28,7 +30,7 @@ class Praise {
     * (this.praiseLayer.height - 2 * this.priseHeight)) + this.priseHeight;
     this.corLastPraise.x = corX;
     this.corLastPraise.y = corY;
-    const comboFilt = combo > 7 ? 7 : combo;
+    const comboFilt = combo > this.maxLengthPraise ? this.maxLengthPraise : combo;
     const interpritator = {
       3: 'great',
       4: 'cool',
@@ -37,7 +39,7 @@ class Praise {
       7: 'awesome',
     };
     const nameImg = interpritator[comboFilt];
-    this.ctx.drawImage(this.priseImg[nameImg].offCanvas, corX, corY);
+    this.ctx.drawImage(this.priseImg[nameImg], corX, corY);
     this.timerId = setTimeout(() => this.clear(), 1000);
   }
 }

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Figure from './Figure.js';
 
 class TableMath {
   constructor(supBlock) {
@@ -15,23 +14,6 @@ class TableMath {
       { upRow: 0, upCol: 1 },
       { upRow: 0, upCol: -1 },
     ];
-  }
-
-  getNewGameTable() {
-    const table = [];
-    for (let row = 0; row < this.sizeTableX; row += 1) {
-      const collumnFigures = [];
-      for (let collumn = 0; collumn < this.sizeTableY; collumn += 1) {
-        const indexType = Math.floor(Math.random() * this.imgsFig.length);
-        const corY = this.startPosY - collumn * (this.heightFig + this.gapY) - this.heightFig;
-        const corX = this.startPosX + row * (this.widthFig + this.gapX);
-        const img = this.imgsFig[indexType].offCanvas;
-        const type = this.imgsFig[indexType].name;
-        collumnFigures.push(new Figure(corY, corX, img, type, this.layer, this.layerEffect));
-      }
-      table.push(collumnFigures);
-    }
-    return table;
   }
 
   locToCorTable(table, loc) {
@@ -75,29 +57,7 @@ class TableMath {
         this.getChainFig(table, elem.col, elem.row, CheckTypes);
       }
     });
-    return { chain: this.chainArr, isBySpell: false, prise: 0, type: 'basic' };
-  }
-
-  createNewFigures(table, chainArr) {
-    const cloneTable = _.cloneDeep(table);
-    const countAddet = Array(this.sizeTableX).fill(0);
-    chainArr.forEach((elem) => {
-      countAddet[elem.col] += 1;
-    });
-    countAddet.forEach((elem, index) => {
-      if (elem !== 0) {
-        const corX = this.startPosX + index * (this.widthFig + this.gapX);
-        for (let i = 1; i <= elem; i += 1) {
-          const indexType = Math.floor(Math.random() * this.imgsFig.length);
-          const img = this.imgsFig[indexType].offCanvas;
-          const type = this.imgsFig[indexType].name;
-          const corY = (this.startPosY + this.gapY - i * (this.heightFig + this.gapY));
-          cloneTable[index].push(new Figure(corY, corX, img, type, this.imgsSuperBlock,
-            this.layer));
-        }
-      }
-    });
-    return cloneTable;
+    return { chain: this.chainArr, isBySpell: false, price: 0, type: 'basic' };
   }
 
   getRenderCol(moveZone, sizeTableY) {
@@ -116,7 +76,7 @@ class TableMath {
     const sumFig = sizeTableX * sizeTableY;
     let sumStopedFigures = sumFig - (fulingCol.length * sizeTableY);
     const heightFig = table[0][0].img.height;
-    const speedFuling = 500;
+    const speedFuling = 800;
     for (let row = 0; row < sizeTableY; row += 1) {
       const stopCorY = endDraw - row * (heightFig + gapY) - heightFig;
       for (const col of fulingCol) {
@@ -176,21 +136,22 @@ class TableMath {
   }
 
   getChain(SpellManager, table, corTable) {
-    const { isSpellRight } = SpellManager;
+    const { isSpellRight, activSpell } = SpellManager;
     const nameFig = table[corTable.col][corTable.row].type;
     const isSpellFig = SpellManager.isSpellName(nameFig);
+    const spellname = isSpellFig && isSpellRight ? activSpell : nameFig;
 
     if (isSpellRight || isSpellFig) {
-      return this.getChainSpell(corTable, isSpellFig, nameFig, SpellManager, table);
+      return this.getChainSpell(corTable, isSpellFig, spellname, SpellManager, table);
     }
     return this.getChainFig(table, corTable.col, corTable.row);
   }
 
   getChainSpell(corTable, isSpellOfTable, spellName, SpellManager) {
     if (isSpellOfTable) { SpellManager.setActivSpell(spellName); }
-    const { chain, prise, type } = SpellManager.getSpell(corTable);
-    const useSpellPrise = !isSpellOfTable ? prise : 0;
-    return { chain, isBySpell: true, prise: useSpellPrise, type };
+    const { chain, price, type } = SpellManager.getSpell(corTable);
+    const useSpellPrise = !isSpellOfTable ? price : 0;
+    return { chain, isBySpell: true, price: useSpellPrise, type };
   }
 }
 export default TableMath;

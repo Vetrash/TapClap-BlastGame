@@ -1,4 +1,4 @@
-import { drawSquareStroke } from '../../../tools/drawSquare.js';
+import DrawSquare from '../../../tools/DrawSquare.js';
 import Button from './Button.js';
 
 class SpellButton extends Button {
@@ -48,7 +48,7 @@ class SpellButton extends Button {
       const setting = {
         x1, x2, y1, y2, radius, color, canvas, lWidth: this.lWidth,
       };
-      drawSquareStroke(setting);
+      DrawSquare.stroke(setting);
       this.isSelected = true;
       window.dispatchEvent(new CustomEvent('activSpell', { detail: { value: this.type } }));
     }

@@ -1,9 +1,23 @@
 import UI from './Components/UI/UI.js';
-import GameTable from './Components/GameTable.js';
+import GameTable from './Components/GameTable/GameTable.js';
 import Praise from './Components/Praise.js';
 
 class Game {
   constructor() {
+    this.sizeTableX = 8;
+    this.sizeTableY = 8;
+    this.chainMinLigth = 2;
+    this.minLigthToSupBlock = 7;
+    this.priceSpell = { bomb: 15, port: 3, lightning: 10 };
+    this.fontSize = { norm: 83.4, big: 140, large: 231 };
+    this.coins = 30;
+    this.clicks = 21;
+    this.borderAddCoin = 1000;
+    this.magnifierBorderAddCoin = 1000;
+    this.coastLevel = 30000;
+    this.coastFigure = 500;
+    this.increaseSet = 1.1;
+    this.coinPrise = 1;
     this.canvasLayers = {};
     const layers = document.querySelectorAll('canvas');
     layers.forEach((elem) => {
@@ -23,9 +37,30 @@ class Game {
   saveImg(imgs) { this.imgs = imgs; }
 
   createElements() {
-    this.UI = new UI(this.canvasLayers, this.imgs);
+    const settingsUI = {
+      coins: this.coins,
+      clicks: this.clicks,
+      borderAddCoin: this.borderAddCoin,
+      magnifierBorderAddCoin: this.magnifierBorderAddCoin,
+      coastLevel: this.coastLevel,
+      sizeTableX: this.sizeTableX,
+      sizeTableY: this.sizeTableY,
+      fontSize: this.fontSize,
+      coastFigure: this.coastFigure,
+      increaseSet: this.increaseSet,
+      coinPrise: this.coinPrise,
+      priceSpell: this.priceSpell,
+    };
+    const settingsGT = {
+      sizeTableX: this.sizeTableX,
+      sizeTableY: this.sizeTableY,
+      chainMinLigth: this.chainMinLigth,
+      minLigthToSupBlock: this.minLigthToSupBlock,
+      priceSpell: this.priceSpell,
+    };
+    this.UI = new UI(this.canvasLayers, this.imgs, settingsUI);
     this.UI.createElements();
-    this.GameTable = new GameTable(this.canvasLayers, this.imgs);
+    this.GameTable = new GameTable(this.canvasLayers, this.imgs, settingsGT);
     this.Prise = new Praise(this.canvasLayers, this.imgs.dataPraise);
   }
 

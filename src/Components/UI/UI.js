@@ -1,36 +1,35 @@
-import TextBox from './TextBox.js';
+import TextBox from './TextBoxs/TextBox.js';
 import ProgressLine from './ProgressLine.js';
-import TextCounterBox from './TextCounterBox.js';
+import TextCounterBox from './TextBoxs/TextCounterBox.js';
 import SpellBar from './SpellBar.js';
 import EndGamePage from './EndGamePage.js';
 
 class UI {
-  constructor(canvasLayers, imgs) {
-    this.coins = 30;
+  constructor(canvasLayers, imgs, settingsUI) {
+    this.settingsUI = settingsUI;
+    this.coins = settingsUI.coins;
     this.score = 0;
-    this.clicks = 21;
+    this.clicks = settingsUI.clicks;
     this.canvasLayers = canvasLayers;
     this.imgs = imgs;
-    this.borderAddCoin = 1000;
-    this.magnifierBorderAddCoin = 1000;
+    this.borderAddCoin = settingsUI.borderAddCoin;
+    this.magnifierBorderAddCoin = settingsUI.magnifierBorderAddCoin;
     this.gapUnderBtn = 50;
     this.gapUnderstatysBar = 30;
     this.startDrawBtnY = this.imgs.dataUI.statysBar.height + this.gapUnderstatysBar;
-    this.coastLevel = 30000;
+    this.coastLevel = settingsUI.coastLevel;
     this.scoreOffset = 80;
-    this.fontSize = {
-      norm: 83.4,
-      big: 140,
-      large: 231,
-    };
-    this.coastFigure = 500;
-    this.MsgPage = new EndGamePage(this.canvasLayers.msgLayer, this.imgs.dataUI.endScore,
-      this.fontSize, this.imgs.dataUI.btnLarge, {
-        win: this.imgs.dataUI.win,
-        lose: this.imgs.dataUI.lose,
-      });
-    window.addEventListener('endGame', () => {
-      this.MsgPage.render(this.score, this.clicks, false);
+    this.sizeTableX = settingsUI.sizeTableX;
+    this.sizeTableY = settingsUI.sizeTableY;
+    this.fontSize = settingsUI.fontSize;
+    this.coastFigure = settingsUI.coastFigure;
+    this.priceSpell = settingsUI.priceSpell;
+    window.addEventListener('endGame', (e) => {
+      window.dispatchEvent(new CustomEvent('swithHandlers', { detail: { value: true } }));
+      const isWin = e.detail.value;
+      setTimeout(() => {
+        this.MsgPage.render(this.score, this.clicks, isWin);
+      }, 1000);
     });
     window.addEventListener('chainDelet', (e) => {
       this.updateScore(e.detail.value);
@@ -40,17 +39,17 @@ class UI {
       this.coinTextBox.updateCounter(this.coins);
       window.dispatchEvent(new CustomEvent('watchCoin', { detail: { value: this.coins } }));
     });
-    window.addEventListener('clickUpdate', () => {
-      this.clicks -= 1;
+    window.addEventListener('clickUpdate', (e) => {
+      this.clicks += e.detail.value;
       this.clickTextBox.updateCounter(this.clicks);
     });
   }
 
   loadStartValue() {
-    this.coins = 100;
+    this.coins = this.settingsUI.coins;
     this.score = 0;
-    this.clicks = 30;
-    this.borderAddCoin = 1000;
+    this.clicks = this.settingsUI.clicks;
+    this.borderAddCoin = this.settingsUI.borderAddCoin;
     this.progressLine.update(this.score);
     this.scoreTextBox.updateCounter(this.score);
     this.coinTextBox.updateCounter(this.coins);
@@ -58,16 +57,15 @@ class UI {
   }
 
   updateScore(value) {
-    const increaseSet = 1.1;
-    const coinPrise = 1;
-    const addScore = value < this.sizefigureX * this.sizefigureY
-      ? Math.round(increaseSet ** value * this.coastFigure)
+    const { increaseSet, coinPrise } = this.settingsUI;
+    const addScore = value < this.sizeTableX * this.sizeTableY
+      ? Math.round((increaseSet ** value) * this.coastFigure)
       : Math.round(value * (this.coastFigure / 10));
     this.score += addScore;
     this.progressLine.update(this.score);
     this.scoreTextBox.updateCounter(this.score);
-    if (this.score >= this.coastLevel) { this.MsgPage.render(this.score, this.clicks, true); }
-    if (this.clicks <= 0) { this.MsgPage.render(this.score, this.clicks, false); }
+    if (this.score >= this.coastLevel) { window.dispatchEvent(new CustomEvent('endGame', { detail: { value: true } })); }
+    if (this.clicks <= 0) { window.dispatchEvent(new CustomEvent('endGame', { detail: { value: false } })); }
     if (this.score >= this.borderAddCoin) {
       const delta = this.score - this.borderAddCoin;
       const numAddLoop = Math.floor(delta / this.magnifierBorderAddCoin);
@@ -106,8 +104,14 @@ class UI {
     const startDrawPrgoressLine = this.startDrawX + gapLoadLineX;
     this.progressLine = new ProgressLine(startDrawPrgoressLine, gapLoadLineY,
       this.coastLevel, UILayer, maxWidthLoadLine, heightLoadLine);
-    this.spellBar = new SpellBar(staticLayer, UILayer, this.imgs.dataSpells);
+    this.spellBar = new SpellBar(staticLayer, UILayer, this.imgs.dataSpells, this.priceSpell);
     this.spellBar.createButtons();
+    this.MsgPage = new EndGamePage(this.canvasLayers.msgLayer, this.imgs.dataUI.endScore,
+      this.fontSize, this.imgs.dataUI.btnBigLarge, {
+        win: this.imgs.dataUI.win,
+        lose: this.imgs.dataUI.lose,
+      });
+    this.MsgPage.createSample();
   }
 
   renderUI() {

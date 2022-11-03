@@ -1,5 +1,5 @@
 class ProgressLine {
-  constructor(posX, posY, coastLevel, layer, width, height, event = 'none') {
+  constructor(posX, posY, coastLevel, layer, width, height) {
     this.scoreProgress = 0;
     this.coastLevel = coastLevel;
     this.maxWidthLoadLine = width;
@@ -7,7 +7,12 @@ class ProgressLine {
     this.layer = layer;
     this.posX = posX;
     this.posY = posY;
-    this.event = event;
+    this.isForceStop = false;
+    window.addEventListener('replay', () => {
+      this.isForceStop = true;
+      this.scoreProgress = 0;
+      this.clear();
+    });
   }
 
   update(score) {
@@ -22,13 +27,19 @@ class ProgressLine {
         ? this.scoreProgress + speedAnim * dt
         : this.scoreProgress + delta;
       this.render();
-      if (delta > 0) {
+      if (delta > 0 || this.isForceStop) {
         requestAnimationFrame(loop);
       } else {
         window.cancelAnimationFrame(loop);
       }
     };
     requestAnimationFrame(loop);
+  }
+
+  clear() {
+    const ctx = this.layer.getContext('2d');
+    ctx.clearRect(this.posX, this.posY, this.maxWidthLoadLine, this.heightLoadLine);
+    this.isForceStop = false;
   }
 
   render() {

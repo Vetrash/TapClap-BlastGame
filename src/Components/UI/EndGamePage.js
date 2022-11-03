@@ -1,4 +1,4 @@
-import TextBox from './TextBox.js';
+import TextBox from './TextBoxs/TextBox.js';
 import TextButton from './Buttons/TextButton.js';
 
 class EndGamePage {
@@ -14,45 +14,48 @@ class EndGamePage {
     this.imgTtles = imgTitles;
   }
 
-  sample(score, click) {
+  sampleRender(score, click) {
     const ctx = this.layer.getContext('2d');
     const posX = (this.layer.width / 2) - (this.baseImg.width / 2);
     const posY = (this.layer.height / 2) - (this.baseImg.height / 2);
     ctx.drawImage(this.baseImg, posX, posY);
+    this.scoreTextBox.updteValue(score);
+    this.clickTextBox.render(click);
+    this.titleTextBox.render();
+    this.scoreTextBox.render();
+    this.clickTextBox.render();
+    this.btn.render();
+  }
+
+  createSample() {
     const textPosX = (this.layer.width / 2);
     const textPosY = (this.layer.height / 2) + this.offsetTitle;
 
-    const titleTextBox = new TextBox('Очки:', textPosX, textPosY, this.layer, this.fontSize.norm);
-    titleTextBox.render();
-
-    const scoreTextBox = new TextBox(score, textPosX, textPosY + this.offsetScore,
+    this.titleTextBox = new TextBox('Очки:', textPosX, textPosY, this.layer, this.fontSize.norm);
+    this.scoreTextBox = new TextBox(0, textPosX, textPosY + this.offsetScore,
       this.layer, this.fontSize.big);
-    scoreTextBox.render();
-
     const clickTextPosY = (this.layer.height / 2) - this.offsetClick;
-    const clickTextBox = new TextBox(click, textPosX, clickTextPosY,
+    this.clickTextBox = new TextBox(0, textPosX, clickTextPosY,
       this.layer, this.fontSize.large);
-    clickTextBox.render();
-
     const posXbtn = (this.layer.width / 2) - (this.btnLarge.width / 2);
     const posYbtn = textPosY + this.offsetBtn;
 
     const event = () => {
-      window.dispatchEvent(new CustomEvent('swithHandlers', { detail: { value: false } }));
       window.dispatchEvent(new CustomEvent('replay'));
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('swithHandlers', { detail: { value: false } }));
+      }, 500);
     };
-    const btn = new TextButton(posXbtn, posYbtn, this.btnLarge, 'Повторим?', this.layer, event, true);
-    btn.render();
+    this.btn = new TextButton(posXbtn, posYbtn, this.btnLarge, 'Повторим?', this.layer, event, true, this.fontSize);
   }
 
   render(score, click, isWin) {
-    this.sample(score, click);
+    this.sampleRender(score, click);
     const ctx = this.layer.getContext('2d');
     const titleimg = isWin ? this.imgTtles.win : this.imgTtles.lose;
     const posX = (this.layer.width / 2) - (titleimg.width / 2);
     const posY = (this.layer.height / 2) - (this.baseImg.height / 2) - titleimg.height;
     ctx.drawImage(titleimg, posX, posY);
-    window.dispatchEvent(new CustomEvent('swithHandlers', { detail: { value: true } }));
   }
 }
 export default EndGamePage;

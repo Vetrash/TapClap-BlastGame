@@ -17,6 +17,10 @@ class TextBox {
     ctx.clearRect(this.posX, this.posY, this.width, this.height);
   }
 
+  updteValue(value) {
+    this.value = value;
+  }
+
   render() {
     this.clear();
     const ctx = this.layer.getContext('2d');

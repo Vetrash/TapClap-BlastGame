@@ -1,19 +1,20 @@
 import _ from 'lodash';
-import { drawSquareFill, drawSquareStroke, drawSquareClip } from '../tools/drawSquare.js';
-import Figure from './Figure.js';
-import SpellManager from './SpellManager.js';
+import DrawSquare from '../../tools/DrawSquare.js';
+import Figure from '../Figure.js';
+import SpellManager from '../Spells/SpellManager.js';
 import TableMath from './TableMath.js';
 
 class GameTable {
-  constructor(canvasLayers, imgs) {
+  constructor(canvasLayers, imgs, settingGT) {
     this.table = [];
     this.gapX = 2;
     this.gapY = -20;
-    this.sizeTableX = 8;
-    this.sizeTableY = 8;
-    this.chainMinLigth = 2;
-    this.minLigthToSupBlock = 7;
-    this.SpellManager = new SpellManager(this.sizeTableX, this.sizeTableY);
+    this.sizeTableX = settingGT.sizeTableX;
+    this.sizeTableY = settingGT.sizeTableY;
+    this.chainMinLigth = settingGT.chainMinLigth;
+    this.minLigthToSupBlock = settingGT.minLigthToSupBlock;
+    this.priceSpell = settingGT.priceSpell;
+    this.SpellManager = new SpellManager(this.sizeTableX, this.sizeTableY, this.priceSpell);
     this.canvasLayers = canvasLayers;
     this.imgs = imgs;
     this.TableMath = new TableMath(_.map(this.imgs.dataSupBlock, 'name'));
@@ -29,11 +30,7 @@ class GameTable {
     this.isFuling = false;
     this.firstFigPort = null;
     this.isHanderStop = false;
-
-    window.addEventListener('swithHandlers', (e) => {
-      this.isHanderStop = e.detail.value;
-    });
-
+    window.addEventListener('swithHandlers', (e) => { this.isHanderStop = e.detail.value; });
     window.addEventListener('clickCanvas', (e) => {
       if (!this.isFuling) {
         const corTable = this.TableMath.locToCorTable(this.table, e.detail.value);
@@ -42,11 +39,8 @@ class GameTable {
         }
       }
     });
-
     window.addEventListener('clearBtnSpellbyNotType', () => {
-      if (this.firstFigPort !== null) {
-        this.firstFigPort.clearTarget();
-      }
+      if (this.firstFigPort !== null) { this.firstFigPort.clearTarget(); }
     });
   }
 
@@ -56,7 +50,7 @@ class GameTable {
     const radiusTable = 80;
     const radiusBorderTable = 60;
     const borderWidth = 30;
-    drawSquareFill({
+    DrawSquare.fill({
       x1: this.borderGapX,
       x2: gameLayer.width - this.borderGapX,
       y1: this.startDrawY,
@@ -65,7 +59,7 @@ class GameTable {
       color: '#0d233d',
       canvas: this.canvasLayers.staticLayer,
     });
-    drawSquareStroke({
+    DrawSquare.stroke({
       x1: this.borderGapX - borderWidth,
       x2: this.canvasLayers.gameLayer.width - this.borderGapX + borderWidth,
       y1: this.startDrawY - borderWidth,
@@ -76,7 +70,7 @@ class GameTable {
       lWidth: borderWidth,
     });
     const radiusClip = 30;
-    drawSquareClip({
+    DrawSquare.clip({
       x1: this.borderGapX,
       x2: gameLayer.width - this.borderGapX,
       y1: this.startDrawY,
@@ -182,32 +176,33 @@ class GameTable {
 
   port(chain) {
     if (chain.length < 2) {
-      const firstFigPort = this.table[chain[0].col][chain[0].row];
-      firstFigPort.renderTarget();
+      this.firstFigPort = this.table[chain[0].col][chain[0].row];
+      this.firstFigPort.renderTarget();
     } else {
-      const firstFigPort = this.table[chain[0].col][chain[0].row];
+      this.firstFigPort = this.table[chain[0].col][chain[0].row];
       const secondFig = this.table[chain[1].col][chain[1].row];
-      const safeFirstData = _.cloneDeep(firstFigPort);
-      firstFigPort.changeType(secondFig.img, secondFig.type);
+      const safeFirstData = _.cloneDeep(this.firstFigPort);
+      this.firstFigPort.changeType(secondFig.img, secondFig.type);
       secondFig.changeType(safeFirstData.img, safeFirstData.type);
       this.moveZone = this.TableMath.getMoveZoneByChain(this.table, chain);
-      firstFigPort.clearTarget();
-      firstFigPort.puffAnimate();
+      this.firstFigPort.clearTarget();
+      this.firstFigPort.puffAnimate();
       secondFig.puffAnimate();
       this.renderPartGameTable();
     }
   }
 
   handler(corTable) {
-    const { chain, isBySpell, prise, type } = this.TableMath.getChain(this.SpellManager,
+    const { chain, isBySpell, price, type } = this.TableMath.getChain(this.SpellManager,
       this.table, corTable);
     this.chainArr = chain;
+    const decreaseClick = isBySpell ? 0 : -1;
     if (type === 'port') {
       this.port(chain);
       this.chainArr = [];
     }
     this.moveZone = this.TableMath.getMoveZoneByChain(this.table, chain);
-    window.dispatchEvent(new CustomEvent('coinUpdate', { detail: { value: -prise } }));
+    window.dispatchEvent(new CustomEvent('coinUpdate', { detail: { value: -price } }));
     if (!isBySpell && this.chainArr.length >= this.minLigthToSupBlock) {
       const firstFigLoc = this.chainArr.shift();
       const firstFig = this.table[firstFigLoc.col][firstFigLoc.row];
@@ -217,7 +212,7 @@ class GameTable {
     if (this.chainArr.length >= this.chainMinLigth) {
       this.shiftBrokenFigures();
       this.animFulingFig();
-      window.dispatchEvent(new CustomEvent('clickUpdate', { detail: { value: -1 } }));
+      window.dispatchEvent(new CustomEvent('clickUpdate', { detail: { value: decreaseClick } }));
       window.dispatchEvent(new CustomEvent('chainDelet', { detail: { value: chain.length } }));
     }
   }
