@@ -1,3 +1,3 @@
-import Initialization from './tools/Initialization.js';
+import Initialization from './Tools/Initialization.js';
 
 Initialization.run();
