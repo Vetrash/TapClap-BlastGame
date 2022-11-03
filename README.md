@@ -1,4 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c213d5a42a506330f61/maintainability)](https://codeclimate.com/github/Vetrash/TapClap-BlastGame/maintainability)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3d272a0b90d34833a05f5129b871a1d9)](https://www.codacy.com/gh/Vetrash/TapClap-BlastGame/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Vetrash/TapClap-BlastGame&amp;utm_campaign=Badge_Grade)
 
 ## Описание
 <p>Прототип игры в жанре “головоломка с механикой Blast”. Поиграть можно <a href="https://tapclap-blastgame-vetrash.vercel.app/">тут</a> или <a href="https://tapclap-blastgame-git-main-vetrash.vercel.app/">тут</a>.</p>
