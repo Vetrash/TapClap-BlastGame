@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import DrawSquare from '../../tools/DrawSquare.js';
+import DrawSquare from '../../Tools/DrawSquare.js';
 import Figure from '../Figure.js';
 import SpellManager from '../Spells/SpellManager.js';
 import TableMath from './TableMath.js';

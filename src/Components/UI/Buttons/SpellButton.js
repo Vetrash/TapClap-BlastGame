@@ -1,4 +1,4 @@
-import DrawSquare from '../../../tools/DrawSquare.js';
+import DrawSquare from '../../../Tools/DrawSquare.js';
 import Button from './Button.js';
 
 class SpellButton extends Button {
