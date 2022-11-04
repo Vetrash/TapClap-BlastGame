@@ -74,7 +74,6 @@ class Initialization {
     AnimFramePolifil.addRequest();
     const myGame = new Game();
     Promise.all([
-      Preload.font('Marvin', 'url(../../assets/fonts/Marvin.woff)'),
       Preload.imgByArr(arrPreload)
         .then((stateImg) => {
           myGame.saveImg(stateImg);

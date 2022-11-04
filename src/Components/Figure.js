@@ -9,8 +9,6 @@ class Figure {
     this.canvasLayers = canvasLayers;
     this.imgs = imgs;
     this.target = imgs.target;
-    this.widthClear = 200;
-    this.heightClear = 200;
     this.targetOffsetY = 15;
   }
 
@@ -25,19 +23,20 @@ class Figure {
     let numFrame = 0;
     let lastTime = Date.now();
     const frameDelay = 60;
+    const offset = 20;
     const frizX = this.corX;
-    const frizY = this.corY;
+    const frizY = this.corY + offset;
     const loop = () => {
       const now = Date.now();
       const stepTime = (now - lastTime);
       if (stepTime >= frameDelay) {
-        ctx.clearRect(frizX, frizY, this.img.width, this.img.height);
+        ctx.clearRect(frizX, frizY, this.img.width, this.img.height - offset);
         ctx.drawImage(this.puffImgs[numFrame].offCanvas, frizX, frizY);
         numFrame += 1;
         lastTime = now;
       }
       if (numFrame >= this.puffImgs.length) {
-        ctx.clearRect(frizX, frizY, this.widthClear, this.heightClear);
+        ctx.clearRect(frizX, frizY, this.img.width, this.img.height - offset);
         cancelAnimationFrame(loop);
       } else {
         requestAnimationFrame(loop);

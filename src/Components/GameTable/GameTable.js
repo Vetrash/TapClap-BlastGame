@@ -94,11 +94,9 @@ class GameTable {
     this.table = newTable;
   }
 
-  renderPartGameTable() {
+  renderPartGameTable(startRenderCol = 0, endRenderCol = this.sizeTableX - 1) {
     const { gameLayer } = this.canvasLayers;
     const gameTableCtx = gameLayer.getContext('2d');
-    const { startRenderCol, endRenderCol } = this.TableMath.getRenderCol(this.moveZone,
-      this.sizeTableY);
     const corStartClear = this.borderGapX + startRenderCol * (this.widthFig + this.gapX);
     const corEndClear = (endRenderCol - startRenderCol + 1) * (this.widthFig + this.gapX);
     gameTableCtx.clearRect(corStartClear, this.startDrawY, corEndClear,
@@ -145,9 +143,11 @@ class GameTable {
       col.forEach((fig) => { fig.puffAnimate(); });
     });
     this.moveZone = Array(this.sizeTableX).fill(this.sizeTableY);
-    this.renderPartGameTable();
+    const { startRenderCol, endRenderCol } = this.TableMath.getRenderCol(this.moveZone,
+      this.sizeTableY);
+    this.renderPartGameTable(startRenderCol, endRenderCol);
     if (sumShuffle >= maxShuffle) {
-      window.dispatchEvent(new CustomEvent('endGame'));
+      window.dispatchEvent(new CustomEvent('endGame', { detail: { value: false } }));
       return;
     }
     this.timerId = setTimeout(() => { this.shuflle(sumShuffle + 1); }, 3000);
@@ -155,21 +155,28 @@ class GameTable {
 
   animFulingFig() {
     let lastTime = Date.now();
-    const fulingCol = this.moveZone.map((e, i) =>  { return e !== this.sizeTableY ? i : 'X'; })
+    const fulingCol = this.moveZone.map((elem, index) => {
+      if (elem !== this.sizeTableY) { return index; }
+      return 'X';
+    })
       .filter((elem) => elem !== 'X');
+    const { startRenderCol, endRenderCol } = this.TableMath.getRenderCol(this.moveZone,
+      this.sizeTableY);
+    this.isFuling = true;
     const loop = () => {
       const now = Date.now();
       const dt = (now - lastTime) / 1000.0;
-      this.isFuling = this.TableMath.fulingFigures(this.table, dt, this.gapY,
+      const isFuling = this.TableMath.fulingFigures(this.table, dt, this.gapY,
         this.endDraw, fulingCol);
       lastTime = now;
-      if (this.isFuling) {
+      if (isFuling) {
         requestAnimationFrame(loop);
       } else {
         window.cancelAnimationFrame(loop);
+        setTimeout(() => { this.isFuling = false; }, 200);
         this.timerId = setTimeout(() => { this.shuflle(); }, 3000);
       }
-      this.renderPartGameTable();
+      this.renderPartGameTable(startRenderCol, endRenderCol);
     };
     requestAnimationFrame(loop);
   }
@@ -188,7 +195,9 @@ class GameTable {
       this.firstFigPort.clearTarget();
       this.firstFigPort.puffAnimate();
       secondFig.puffAnimate();
-      this.renderPartGameTable();
+      const { startRenderCol, endRenderCol } = this.TableMath.getRenderCol(this.moveZone,
+        this.sizeTableY);
+      this.renderPartGameTable(startRenderCol, endRenderCol);
     }
   }
 

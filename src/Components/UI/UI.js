@@ -64,8 +64,14 @@ class UI {
     this.score += addScore;
     this.progressLine.update(this.score);
     this.scoreTextBox.updateCounter(this.score);
-    if (this.score >= this.coastLevel) { window.dispatchEvent(new CustomEvent('endGame', { detail: { value: true } })); }
-    if (this.clicks <= 0) { window.dispatchEvent(new CustomEvent('endGame', { detail: { value: false } })); }
+    if (this.score >= this.coastLevel) {
+      window.dispatchEvent(new CustomEvent('endGame', { detail: { value: true } }));
+      return;
+    }
+    if (this.clicks <= 0) {
+      window.dispatchEvent(new CustomEvent('endGame', { detail: { value: false } }));
+      return;
+    }
     if (this.score >= this.borderAddCoin) {
       const delta = this.score - this.borderAddCoin;
       const numAddLoop = Math.floor(delta / this.magnifierBorderAddCoin);
