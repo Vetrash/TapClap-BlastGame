@@ -92,6 +92,9 @@ class GameTable {
       newTable.push(collumnFigures);
     }
     this.table = newTable;
+    this.table.forEach((col) => {
+      col.forEach((elem) => elem.puffAnimate());
+    });
   }
 
   renderPartGameTable(startRenderCol = 0, endRenderCol = this.sizeTableX - 1) {
