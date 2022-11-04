@@ -20,7 +20,7 @@ class EndGamePage {
     const posY = (this.layer.height / 2) - (this.baseImg.height / 2);
     ctx.drawImage(this.baseImg, posX, posY);
     this.scoreTextBox.updteValue(score);
-    this.clickTextBox.render(click);
+    this.clickTextBox.updteValue(click);
     this.titleTextBox.render();
     this.scoreTextBox.render();
     this.clickTextBox.render();
