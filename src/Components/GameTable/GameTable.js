@@ -140,6 +140,7 @@ class GameTable {
     clearTimeout(this.timerId);
     const maxShuffle = 2;
     const isShaffling = !this.TableMath.checkForMove(this.table, this.chainMinLigth);
+    const delay = 3000;
     if (!isShaffling) { return; }
     this.table = this.TableMath.shuffle(this.table);
     this.table.forEach((col) => {
@@ -153,10 +154,12 @@ class GameTable {
       window.dispatchEvent(new CustomEvent('endGame', { detail: { value: false } }));
       return;
     }
-    this.timerId = setTimeout(() => { this.shuflle(sumShuffle + 1); }, 3000);
+    this.timerId = setTimeout(() => { this.shuflle(sumShuffle + 1); }, delay);
   }
 
   animFulingFig() {
+    const delay = 3000;
+    const delaySwitchHandler = 200;
     let lastTime = Date.now();
     const fulingCol = this.moveZone.map((elem, index) => {
       if (elem !== this.sizeTableY) { return index; }
@@ -176,8 +179,8 @@ class GameTable {
         requestAnimationFrame(loop);
       } else {
         window.cancelAnimationFrame(loop);
-        setTimeout(() => { this.isFuling = false; }, 200);
-        this.timerId = setTimeout(() => { this.shuflle(); }, 3000);
+        setTimeout(() => { this.isFuling = false; }, delaySwitchHandler);
+        this.timerId = setTimeout(() => { this.shuflle(); }, delay);
       }
       this.renderPartGameTable(startRenderCol, endRenderCol);
     };

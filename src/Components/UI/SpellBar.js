@@ -16,7 +16,7 @@ class SpellBar {
   }
 
   createButtons() {
-    const useSpell = Object.entries(this.price);
+    const useSpell = Object.keys(this.price);
     this.borderGapX = (this.UILayer.width
       - ((this.btnSpell.width + this.gapX) * useSpell.length)) / 2;
     this.StartDrawY = this.staticLayer.height - this.btnSpell.height - this.gapYborder;
@@ -24,10 +24,10 @@ class SpellBar {
       const posX = this.borderGapX + (this.btnSpell.width + this.gapX) * index;
       const posY = this.StartDrawY + this.gapYborder;
 
-      const imgSpell = this.imgsSpells[spell[0]];
-      const prise = spell[1];
+      const imgSpell = this.imgsSpells[spell];
+      const prise = this.price[spell];
       const spellBtn = new SpellButton(posX, posY, this.UILayer,
-        this.staticLayer, this.btnSpell, imgSpell, spell[0], prise);
+        this.staticLayer, this.btnSpell, imgSpell, spell, prise);
       return spellBtn;
     });
     this.title = new TextBox('БОНУСЫ', this.staticLayer.width / 2, this.StartDrawY, this.staticLayer, this.fontSize.norm);

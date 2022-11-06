@@ -12,7 +12,7 @@ class UI {
     this.clicks = settingsUI.clicks;
     this.canvasLayers = canvasLayers;
     this.imgs = imgs;
-    this.borderAddCoin = settingsUI.borderAddCoin;
+    this.borderAddCoin = 0;
     this.magnifierBorderAddCoin = settingsUI.magnifierBorderAddCoin;
     this.gapUnderBtn = 50;
     this.gapUnderstatysBar = 30;
@@ -49,7 +49,7 @@ class UI {
     this.coins = this.settingsUI.coins;
     this.score = 0;
     this.clicks = this.settingsUI.clicks;
-    this.borderAddCoin = this.settingsUI.borderAddCoin;
+    this.borderAddCoin = 0;
     this.progressLine.update(this.score);
     this.scoreTextBox.updateCounter(this.score);
     this.coinTextBox.updateCounter(this.coins);
